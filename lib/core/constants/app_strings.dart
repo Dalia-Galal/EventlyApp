@@ -4,7 +4,7 @@ abstract class AppStrings {
   static const String enterYourPassword = 'Enter your email';
   static const String forgetPassword = 'Forget Password? ';
   static const String login = 'Login ';
-  static const String doYouHaveAccount = 'Don’t have an account ?';
+  static const String doNotYouHaveAccount = 'Don’t have an account ?';
   static const String signUP = 'Signup';
   static const String loginWithGoogle = 'Login with Google';
   static const String createYourAccount = 'Create your account';
@@ -42,16 +42,16 @@ abstract class AppStrings {
   static const String boardingTitle_4 = 'Connect with Friends & Share Moments';
   static const String boardingDescription =
       'Make every event memorable by sharing the experience with others. Our platform lets you invite friends, keep everyone in the loop, and celebrate moments together. Capture and share the excitement with your network, so you can relive the highlights and cherish the memories.';
-static const String addEvent = 'Add event';
-static const String  eventDetails = 'Event details';
-static const String updateEvent = 'Event Description....';
-static const String title = 'Title';
-static const String eventTitle = 'Event Title';
-static const String description = 'Description ';
-static const String eventDescription = 'Update event';
-static const String chooseDate = 'Choose date';
-static const String chooseTime = 'Choose time';
-static const String eventDate = 'Event Date';
-static const String eventTime = 'Event Time';
+  static const String addEvent = 'Add event';
+  static const String  eventDetails = 'Event details';
+  static const String updateEvent = 'Event Description....';
+  static const String title = 'Title';
+  static const String eventTitle = 'Event Title';
+  static const String description = 'Description ';
+  static const String eventDescription = 'Update event';
+  static const String chooseDate = 'Choose date';
+  static const String chooseTime = 'Choose time';
+  static const String eventDate = 'Event Date';
+  static const String eventTime = 'Event Time';
 
  }

@@ -9,76 +9,94 @@
 // ignore_for_file: type=lint
 // ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
 
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart' as _svg;
+import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
   /// File path: assets/icons/calendar_dark.svg
-  String get calendarDark => 'assets/icons/calendar_dark.svg';
+  SvgGenImage get calendarDark =>
+      const SvgGenImage('assets/icons/calendar_dark.svg');
 
   /// File path: assets/icons/calendar_light.svg
-  String get calendarLight => 'assets/icons/calendar_light.svg';
+  SvgGenImage get calendarLight =>
+      const SvgGenImage('assets/icons/calendar_light.svg');
 
   /// File path: assets/icons/clock_dark.svg
-  String get clockDark => 'assets/icons/clock_dark.svg';
+  SvgGenImage get clockDark => const SvgGenImage('assets/icons/clock_dark.svg');
 
   /// File path: assets/icons/clock_light.svg
-  String get clockLight => 'assets/icons/clock_light.svg';
+  SvgGenImage get clockLight =>
+      const SvgGenImage('assets/icons/clock_light.svg');
 
   /// File path: assets/icons/eye-slash.svg
-  String get eyeSlash => 'assets/icons/eye-slash.svg';
+  SvgGenImage get eyeSlash => const SvgGenImage('assets/icons/eye-slash.svg');
 
   /// File path: assets/icons/eye.svg
-  String get eye => 'assets/icons/eye.svg';
+  SvgGenImage get eye => const SvgGenImage('assets/icons/eye.svg');
+
+  /// File path: assets/icons/google-icon-logo-svgrepo-com.svg
+  SvgGenImage get googleIconLogoSvgrepoCom =>
+      const SvgGenImage('assets/icons/google-icon-logo-svgrepo-com.svg');
 
   /// File path: assets/icons/google.svg
-  String get google => 'assets/icons/google.svg';
+  SvgGenImage get google => const SvgGenImage('assets/icons/google.svg');
 
   /// File path: assets/icons/heart_selected.svg
-  String get heartSelected => 'assets/icons/heart_selected.svg';
+  SvgGenImage get heartSelected =>
+      const SvgGenImage('assets/icons/heart_selected.svg');
 
   /// File path: assets/icons/heart_un_selected.svg
-  String get heartUnSelected => 'assets/icons/heart_un_selected.svg';
+  SvgGenImage get heartUnSelected =>
+      const SvgGenImage('assets/icons/heart_un_selected.svg');
 
   /// File path: assets/icons/home_selected.svg
-  String get homeSelected => 'assets/icons/home_selected.svg';
+  SvgGenImage get homeSelected =>
+      const SvgGenImage('assets/icons/home_selected.svg');
 
   /// File path: assets/icons/home_un_selected.svg
-  String get homeUnSelected => 'assets/icons/home_un_selected.svg';
+  SvgGenImage get homeUnSelected =>
+      const SvgGenImage('assets/icons/home_un_selected.svg');
 
   /// File path: assets/icons/lock.svg
-  String get lock => 'assets/icons/lock.svg';
+  SvgGenImage get lock => const SvgGenImage('assets/icons/lock.svg');
 
   /// File path: assets/icons/moon_dark.svg
-  String get moonDark => 'assets/icons/moon_dark.svg';
+  SvgGenImage get moonDark => const SvgGenImage('assets/icons/moon_dark.svg');
 
   /// File path: assets/icons/moon_light.svg
-  String get moonLight => 'assets/icons/moon_light.svg';
+  SvgGenImage get moonLight => const SvgGenImage('assets/icons/moon_light.svg');
 
   /// File path: assets/icons/sms.svg
-  String get sms => 'assets/icons/sms.svg';
+  SvgGenImage get sms => const SvgGenImage('assets/icons/sms.svg');
 
   /// File path: assets/icons/sun.svg
-  String get sun => 'assets/icons/sun.svg';
+  SvgGenImage get sun => const SvgGenImage('assets/icons/sun.svg');
 
   /// File path: assets/icons/user_selected.svg
-  String get userSelected => 'assets/icons/user_selected.svg';
+  SvgGenImage get userSelected =>
+      const SvgGenImage('assets/icons/user_selected.svg');
 
   /// File path: assets/icons/user_un_selceted.svg
-  String get userUnSelceted => 'assets/icons/user_un_selceted.svg';
+  SvgGenImage get userUnSelceted =>
+      const SvgGenImage('assets/icons/user_un_selceted.svg');
 
   /// File path: assets/icons/visibility_off.svg
-  String get visibilityOff => 'assets/icons/visibility_off.svg';
+  SvgGenImage get visibilityOff =>
+      const SvgGenImage('assets/icons/visibility_off.svg');
 
   /// List of all assets
-  List<String> get values => [
+  List<SvgGenImage> get values => [
     calendarDark,
     calendarLight,
     clockDark,
     clockLight,
     eyeSlash,
     eye,
+    googleIconLogoSvgrepoCom,
     google,
     heartSelected,
     heartUnSelected,
@@ -115,13 +133,16 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/bookclub_light.png');
 
   /// File path: assets/images/calendar_light.svg
-  String get calendarLight => 'assets/images/calendar_light.svg';
+  SvgGenImage get calendarLight =>
+      const SvgGenImage('assets/images/calendar_light.svg');
 
   /// File path: assets/images/clock_dark.svg
-  String get clockDark => 'assets/images/clock_dark.svg';
+  SvgGenImage get clockDark =>
+      const SvgGenImage('assets/images/clock_dark.svg');
 
   /// File path: assets/images/clock_light.svg
-  String get clockLight => 'assets/images/clock_light.svg';
+  SvgGenImage get clockLight =>
+      const SvgGenImage('assets/images/clock_light.svg');
 
   /// File path: assets/images/eventely_dark.png
   AssetGenImage get eventelyDark =>
@@ -333,4 +354,78 @@ class AssetGenImageAnimation {
   final bool isAnimation;
   final Duration duration;
   final int frames;
+}
+
+class SvgGenImage {
+  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = false;
+
+  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = true;
+
+  final String _assetName;
+  final Size? size;
+  final Set<String> flavors;
+  final bool _isVecFormat;
+
+  _svg.SvgPicture svg({
+    Key? key,
+    bool matchTextDirection = false,
+    AssetBundle? bundle,
+    String? package,
+    double? width,
+    double? height,
+    BoxFit fit = BoxFit.contain,
+    AlignmentGeometry alignment = Alignment.center,
+    bool allowDrawingOutsideViewBox = false,
+    WidgetBuilder? placeholderBuilder,
+    String? semanticsLabel,
+    bool excludeFromSemantics = false,
+    _svg.SvgTheme? theme,
+    _svg.ColorMapper? colorMapper,
+    ColorFilter? colorFilter,
+    Clip clipBehavior = Clip.hardEdge,
+    @deprecated Color? color,
+    @deprecated BlendMode colorBlendMode = BlendMode.srcIn,
+    @deprecated bool cacheColorFilter = false,
+  }) {
+    final _svg.BytesLoader loader;
+    if (_isVecFormat) {
+      loader = _vg.AssetBytesLoader(
+        _assetName,
+        assetBundle: bundle,
+        packageName: package,
+      );
+    } else {
+      loader = _svg.SvgAssetLoader(
+        _assetName,
+        assetBundle: bundle,
+        packageName: package,
+        theme: theme,
+        colorMapper: colorMapper,
+      );
+    }
+    return _svg.SvgPicture(
+      loader,
+      key: key,
+      matchTextDirection: matchTextDirection,
+      width: width,
+      height: height,
+      fit: fit,
+      alignment: alignment,
+      allowDrawingOutsideViewBox: allowDrawingOutsideViewBox,
+      placeholderBuilder: placeholderBuilder,
+      semanticsLabel: semanticsLabel,
+      excludeFromSemantics: excludeFromSemantics,
+      colorFilter:
+          colorFilter ??
+          (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
+      clipBehavior: clipBehavior,
+      cacheColorFilter: cacheColorFilter,
+    );
+  }
+
+  String get path => _assetName;
+
+  String get keyName => _assetName;
 }
