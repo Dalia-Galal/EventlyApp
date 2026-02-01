@@ -16,7 +16,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return SafeArea(
+    return
+      SafeArea(
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -49,15 +50,20 @@ class LoginScreen extends StatelessWidget {
                   isPassword: true,
                 ),
                 SizedBox(height: 20),
-                Text(
-                  AppStrings.forgetPassword,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: ColorPalette.primaryLightColor,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.underline,
-                    decorationColor: ColorPalette.primaryLightColor,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, PagesRouteName.forgetPassword);
+                  },
+                  child: Text(
+                    '${AppStrings.forgetPassword}?',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: ColorPalette.primaryLightColor,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.underline,
+                      decorationColor: ColorPalette.primaryLightColor,
+                    ),
+                    textAlign: TextAlign.end,
                   ),
-                  textAlign: TextAlign.end,
                 ),
                 SizedBox(height: 20),
                 ElevatedButtonWidget(
