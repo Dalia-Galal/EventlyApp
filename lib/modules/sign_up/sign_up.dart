@@ -1,17 +1,21 @@
-import 'package:evently/core/app_theme/color_palette.dart';
-import 'package:evently/core/app_theme/theme_manager.dart';
-import 'package:evently/core/constants/app_strings.dart';
-import 'package:evently/core/routes/app_router.dart';
-import 'package:evently/core/routes/pages_route_name.dart';
-import 'package:evently/core/widgets/elevated_button_widget.dart';
-import 'package:evently/core/widgets/text_form_field_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../core/app_theme/color_palette.dart';
+import '../../core/constants/app_strings.dart';
+import '../../core/routes/pages_route_name.dart';
+import '../../core/widgets/elevated_button_widget.dart';
+import '../../core/widgets/text_form_field_widget.dart';
 import '../../gen/assets.gen.dart';
 
-class LoginScreen extends StatelessWidget {
+class SignUp extends StatelessWidget {
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  LoginScreen({super.key});
+
+  final TextEditingController confirmPasswordController = TextEditingController();
+ SignUp({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +36,14 @@ class LoginScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  AppStrings.loginToYourAccount,
+                  AppStrings.createYourAccount,
                   style: theme.textTheme.headlineSmall,
+                ),
+                SizedBox(height: 20),
+                TextFormFieldWidget(
+                  prefixIcon: $AssetsIconsGen().userUnSelceted.svg(),
+                  hintText: AppStrings.enterYourName,
+                  controller: nameController,
                 ),
                 SizedBox(height: 20),
                 TextFormFieldWidget(
@@ -49,22 +59,19 @@ class LoginScreen extends StatelessWidget {
                   isPassword: true,
                 ),
                 SizedBox(height: 20),
-                Text(
-                  AppStrings.forgetPassword,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: ColorPalette.primaryLightColor,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.underline,
-                    decorationColor: ColorPalette.primaryLightColor,
-                  ),
-                  textAlign: TextAlign.end,
+                TextFormFieldWidget(
+                  prefixIcon: Assets.icons.lock.svg(),
+                  hintText: AppStrings.confirmYourPassword,
+                  controller: confirmPasswordController,
+                  isPassword: true,
                 ),
+                SizedBox(height: 20),
                 SizedBox(height: 20),
                 ElevatedButtonWidget(
                   onPressed: () {
                     Navigator.pushNamed(context, PagesRouteName.layout);
                   },
-                  buttonText: AppStrings.login,
+                  buttonText: AppStrings.signUP,
                 ),
                 SizedBox(height: 20),
                 RichText(
@@ -72,16 +79,16 @@ class LoginScreen extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: AppStrings.doNotYouHaveAccount,
+                        text: AppStrings.alreadyHaveAccount,
                         style: theme.textTheme.titleSmall,
                       ),
                       WidgetSpan(
                         child: InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, PagesRouteName.signUp);
+                            Navigator.pushNamed(context, PagesRouteName.signIn);
                           },
                           child: Text(
-                            AppStrings.signUP,
+                            AppStrings.login,
                             style: theme.textTheme.titleSmall?.copyWith(
                               color: ColorPalette.primaryLightColor,
                               decoration: TextDecoration.underline,
@@ -126,7 +133,7 @@ class LoginScreen extends StatelessWidget {
                     spacing: 10,
                     children: [
                       Assets.icons.googleIconLogoSvgrepoCom.svg(width: 24,height: 24),
-                      Text(AppStrings.loginWithGoogle),
+                      Text(AppStrings.signUpWithGoogle),
                     ],
                   ),
                 ),
@@ -135,6 +142,8 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+
+
     );
   }
 }

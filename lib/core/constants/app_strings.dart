@@ -1,7 +1,7 @@
 abstract class AppStrings {
   static const String loginToYourAccount = 'Login to your account';
   static const String enterYourEmail = 'Enter your email';
-  static const String enterYourPassword = 'Enter your email';
+  static const String enterYourPassword = 'Enter your Password';
   static const String forgetPassword = 'Forget Password? ';
   static const String login = 'Login ';
   static const String doNotYouHaveAccount = 'Don’t have an account ?';

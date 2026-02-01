@@ -6,7 +6,7 @@ import '../../gen/fonts.gen.dart';
 abstract class ThemeManager {
   static ThemeData themeDataLight = ThemeData(
     scaffoldBackgroundColor:ColorPalette.backgroundLightColor,
-    primaryColor: Colors.blue,
+    primaryColor:ColorPalette.primaryLightColor,
     useMaterial3: true,
     textTheme: TextTheme(
       headlineSmall: TextStyle(
@@ -31,6 +31,12 @@ abstract class ThemeManager {
           fontFamily:FontFamily.poppins,
         fontWeight: FontWeight.w400,
         color: ColorPalette.primaryLightTextColor
+      ),
+      titleMedium: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        fontFamily: FontFamily.poppins,
+        color: ColorPalette.primaryLightColor
       ),
       bodySmall: TextStyle(
         fontSize: 12,

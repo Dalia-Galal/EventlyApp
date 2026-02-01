@@ -1,5 +1,6 @@
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/modules/login/login_screen.dart';
+import 'package:evently/modules/sign_up/sign_up.dart';
 import 'package:evently/modules/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,8 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (context) => SplashScreen());
       case PagesRouteName.signIn:
         return MaterialPageRoute(builder: (context) => LoginScreen());
+      case PagesRouteName.signUp:
+        return MaterialPageRoute(builder: (context) => SignUp());
       default:
         return MaterialPageRoute(builder: (context) => SplashScreen());
     }

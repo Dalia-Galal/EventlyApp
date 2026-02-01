@@ -1,39 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../gen/assets.gen.dart';
 import '../app_theme/color_palette.dart';
 import '../constants/app_strings.dart';
 
-class TextFormFieldWidget extends StatelessWidget {
+class TextFormFieldWidget extends StatefulWidget {
   final String? hintText;
   final TextEditingController? controller;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-
+  final bool isPassword;
   const TextFormFieldWidget({
     super.key,
-    required this.hintText,
-    required this.prefixIcon,
-    required this.controller,
+    this.hintText,
+    this.prefixIcon,
+    this.controller,
     this.suffixIcon,
+    this.isPassword = false,
   });
 
+  @override
+  State<TextFormFieldWidget> createState() => _TextFormFieldWidgetState();
+}
+
+class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
+  bool obscureText = true;
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
     return TextFormField(
+      controller: widget.controller,
+      obscureText: widget.isPassword ? obscureText : false,
+      cursorColor: ColorPalette.strokeLightColor,
       decoration: InputDecoration(
-        hintText: AppStrings.enterYourEmail,
-
+        hintText:widget.hintText,
         prefixIcon: Padding(
           padding: EdgeInsetsGeometry.all(10),
-          child: prefixIcon,
+          child: widget.prefixIcon,
         ),
-        suffixIcon: Padding(
-          padding: EdgeInsetsGeometry.all(10),
-          child: suffixIcon,
-        ),
+        suffixIcon: widget.isPassword
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    obscureText = !obscureText;
+                  });
+                },
+                icon: Padding(
+                  padding: EdgeInsetsGeometry.all(10),
+                  child: obscureText
+                      ? Assets.icons.eye.svg(
+                          width: 24,
+                          height: 24,
+                        )
+                      : Assets.icons.eyeSlash.svg(
+                          width: 24,
+                          height: 24,
+                        ),
+                ),
+              )
+            : null,
+
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(
@@ -57,7 +85,6 @@ class TextFormFieldWidget extends StatelessWidget {
           borderSide: BorderSide(color: Colors.red),
         ),
       ),
-
       style: theme.textTheme.titleSmall,
     );
   }
