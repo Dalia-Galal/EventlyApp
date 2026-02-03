@@ -4,14 +4,14 @@ import '../constants/app_strings.dart';
 
 class ElevatedButtonWidget extends StatelessWidget {
   final String? buttonText;
-  final Function? onPressed;
+  final void Function()? onPressed;
   final Color? foregroundColor;
   final Color? backgroundColor;
   final Widget? customChild;
   const ElevatedButtonWidget({
     super.key,
     this.buttonText,
-    this.onPressed,
+   required this.onPressed,
     this.foregroundColor,
     this.backgroundColor,
     this.customChild,
@@ -21,7 +21,7 @@ class ElevatedButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? ColorPalette.primaryLightColor,
         foregroundColor: foregroundColor ?? ColorPalette.primaryDarkTextColor,

@@ -11,6 +11,8 @@ class TextFormFieldWidget extends StatefulWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool isPassword;
+  final String? Function(String?)? validator;
+  // final void Function(String)? onFieldSubmitted;
   const TextFormFieldWidget({
     super.key,
     this.hintText,
@@ -18,6 +20,8 @@ class TextFormFieldWidget extends StatefulWidget {
     this.controller,
     this.suffixIcon,
     this.isPassword = false,
+    this.validator,
+    // this.onFieldSubmitted,
   });
 
   @override
@@ -32,10 +36,14 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
 
     return TextFormField(
       controller: widget.controller,
+      validator: widget.validator,
+     // onFieldSubmitted: widget.onFieldSubmitted,
+     // autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: widget.isPassword ? obscureText : false,
       cursorColor: ColorPalette.strokeLightColor,
+
       decoration: InputDecoration(
-        hintText:widget.hintText,
+        hintText: widget.hintText,
         prefixIcon: Padding(
           padding: EdgeInsetsGeometry.all(10),
           child: widget.prefixIcon,
@@ -50,14 +58,8 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
                 icon: Padding(
                   padding: EdgeInsetsGeometry.all(10),
                   child: obscureText
-                      ? Assets.icons.eye.svg(
-                          width: 24,
-                          height: 24,
-                        )
-                      : Assets.icons.eyeSlash.svg(
-                          width: 24,
-                          height: 24,
-                        ),
+                      ? Assets.icons.eye.svg(width: 24, height: 24)
+                      : Assets.icons.eyeSlash.svg(width: 24, height: 24),
                 ),
               )
             : null,
@@ -82,7 +84,11 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.red),
+          borderSide: BorderSide(color: Colors.red, width: 1.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: Colors.red, width: 1.5),
         ),
       ),
       style: theme.textTheme.titleSmall,

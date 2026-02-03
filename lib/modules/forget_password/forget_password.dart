@@ -3,6 +3,7 @@ import 'package:evently/core/constants/app_strings.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/routes/pages_route_name.dart';
 import '../../gen/assets.gen.dart';
 
 class ForgetPassword extends StatelessWidget {
@@ -15,20 +16,29 @@ class ForgetPassword extends StatelessWidget {
         title: Text(AppStrings.forgetPassword),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        leading: Icon(Icons.arrow_back_ios_new,color: ColorPalette.primaryLightColor,),
+        leading: InkWell(
+          onTap: (){Navigator.popAndPushNamed(context, PagesRouteName.signIn);},
+          child:
+            Icon(
+              Icons.arrow_back_ios_new,
+              color: ColorPalette.primaryLightColor,
+            ),
+
+        ),
       ),
-      body:
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: 20,
             children: [
               Image.asset(Assets.images.forgetPasswordLight.path),
-              ElevatedButtonWidget(buttonText: AppStrings.resetPassword,),
+              ElevatedButtonWidget(onPressed : (){},buttonText: AppStrings.resetPassword),
             ],
           ),
-        )
+        ),
+      ),
     );
   }
 }
