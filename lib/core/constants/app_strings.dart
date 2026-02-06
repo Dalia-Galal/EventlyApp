@@ -19,7 +19,7 @@ abstract class AppStrings {
   static const String darkMode = 'Dark mode';
   static const String language = 'Language';
   static const String arabic = 'Arabic';
-  static const String english = 'English';
+  static const String english = 'En';
   static const String theme = 'Theme';
   static const String logout = 'Logout';
   static const String home = 'Home';

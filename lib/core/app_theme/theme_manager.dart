@@ -41,6 +41,16 @@ abstract class ThemeManager {
       bodySmall: TextStyle(
         fontSize: 12,
       )
-    )
+    ),
+     bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: ColorPalette.primaryDarkTextColor,
+        type: BottomNavigationBarType.fixed,
+       selectedIconTheme: const IconThemeData(size: 24),
+       unselectedIconTheme: const IconThemeData(size: 12),
+       selectedItemColor: ColorPalette.primaryLightColor,
+       unselectedItemColor: ColorPalette.disabledColor,
+       selectedLabelStyle: const TextStyle(fontSize: 12),
+       unselectedLabelStyle: const TextStyle(fontSize: 12),
+      ),
   );
 }

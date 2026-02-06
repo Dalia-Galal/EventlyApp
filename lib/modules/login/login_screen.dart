@@ -1,16 +1,13 @@
 import 'package:evently/core/app_theme/color_palette.dart';
-import 'package:evently/core/app_theme/theme_manager.dart';
 import 'package:evently/core/constants/app_strings.dart';
-import 'package:evently/core/routes/app_router.dart';
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
 import 'package:evently/core/widgets/text_form_field_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../../gen/assets.gen.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -19,8 +16,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController(text: 'Dalia@gmail.com');
+  final TextEditingController _passwordController = TextEditingController(text: 'kfj1Rt#123');
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -74,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return 'Enter your password ';
                       }
                       final passwordRegex = RegExp(
-                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{8,}$',
                       );
                       if (!passwordRegex.hasMatch(value)) {
                         return 'Password must contain at least 8 chars, one uppercase, one lowercase, one number, and one special character';

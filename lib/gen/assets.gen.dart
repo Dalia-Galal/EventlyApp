@@ -17,6 +17,17 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/birthday-cake_dark.svg
+  SvgGenImage get birthdayCakeDark =>
+      const SvgGenImage('assets/icons/birthday-cake_dark.svg');
+
+  /// File path: assets/icons/birthday-cake_light.svg
+  SvgGenImage get birthdayCakeLight =>
+      const SvgGenImage('assets/icons/birthday-cake_light.svg');
+
+  /// File path: assets/icons/book_light.svg
+  SvgGenImage get bookLight => const SvgGenImage('assets/icons/book_light.svg');
+
   /// File path: assets/icons/calendar_dark.svg
   SvgGenImage get calendarDark =>
       const SvgGenImage('assets/icons/calendar_dark.svg');
@@ -73,8 +84,18 @@ class $AssetsIconsGen {
   /// File path: assets/icons/sms.svg
   SvgGenImage get sms => const SvgGenImage('assets/icons/sms.svg');
 
+  /// File path: assets/icons/sport_dark.svg
+  SvgGenImage get sportDark => const SvgGenImage('assets/icons/sport_dark.svg');
+
+  /// File path: assets/icons/sport_light.svg
+  SvgGenImage get sportLight =>
+      const SvgGenImage('assets/icons/sport_light.svg');
+
   /// File path: assets/icons/sun.svg
   SvgGenImage get sun => const SvgGenImage('assets/icons/sun.svg');
+
+  /// File path: assets/icons/sun_light.svg
+  SvgGenImage get sunLight => const SvgGenImage('assets/icons/sun_light.svg');
 
   /// File path: assets/icons/user_selected.svg
   SvgGenImage get userSelected =>
@@ -90,6 +111,9 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+    birthdayCakeDark,
+    birthdayCakeLight,
+    bookLight,
     calendarDark,
     calendarLight,
     clockDark,
@@ -106,7 +130,10 @@ class $AssetsIconsGen {
     moonDark,
     moonLight,
     sms,
+    sportDark,
+    sportLight,
     sun,
+    sunLight,
     userSelected,
     userUnSelceted,
     visibilityOff,

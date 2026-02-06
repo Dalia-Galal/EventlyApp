@@ -11,5 +11,5 @@ abstract class ColorPalette {
   static const Color primaryLightTextColor = Color(0xFF1C1C1C);
   static const Color secondaryDarkTextColor = Color(0xFFD6D6D6);
   static const Color primaryDarkTextColor = Color(0xFFFFFFFF);
-
+  static const Color disabledColor = Color(0xFFB9B9B9);
 }
