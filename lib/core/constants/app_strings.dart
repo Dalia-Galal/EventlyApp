@@ -48,7 +48,7 @@ abstract class AppStrings {
   static const String title = 'Title';
   static const String eventTitle = 'Event Title';
   static const String description = 'Description ';
-  static const String eventDescription = 'Update event';
+  static const String eventDescription = 'Event Description....';
   static const String chooseDate = 'Choose date';
   static const String chooseTime = 'Choose time';
   static const String eventDate = 'Event Date';

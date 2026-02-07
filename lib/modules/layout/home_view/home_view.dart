@@ -2,13 +2,44 @@ import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/event_card_widget.dart';
 import 'package:evently/modules/layout/home_view/widgets/TabBarItemWidget.dart';
 import 'package:flutter/material.dart';
-
 import '../../../core/app_theme/color_palette.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../gen/assets.gen.dart';
+import '../../../models/event_data_model.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  List<EventDataModel> categories = [
+    EventDataModel(
+      id: 'sport',
+      name: 'Sport',
+      lightImage: Assets.images.sportLight.path,
+      darkImage: Assets.images.sportDark.path,
+      icon: Assets.icons.sportLight,
+    ),
+    EventDataModel(
+      id: 'birthday',
+      name: 'Birthday',
+      lightImage: Assets.images.birthdayLight.path,
+      darkImage: Assets.images.birthdayDark.path,
+      icon: Assets.icons.birthdayCakeLight,
+    ),
+    EventDataModel(
+      id: 'book_club',
+      name: 'BookClub',
+      lightImage: Assets.images.bookclubLight.path,
+      darkImage: Assets.images.bookclubDark.path,
+      icon: Assets.icons.bookLight,
+    ),
+  ];
+
+  int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +80,25 @@ class HomeView extends StatelessWidget {
         children: [
           SizedBox.shrink(),
           DefaultTabController(
-            length: 5,
+            length: categories.length,
             child: TabBar(
+              onTap: (index) {
+                setState(() {
+                  currentIndex = index;
+                });
+              },
               isScrollable: true,
               dividerColor: Colors.transparent,
               indicator: BoxDecoration(),
               tabAlignment: TabAlignment.start,
               labelPadding: const EdgeInsets.symmetric(horizontal: 8),
               overlayColor: WidgetStatePropertyAll(Colors.transparent),
-              tabs: List.generate(5, (context) => TabBarItemWidget()),
+              tabs: categories.map((data) {
+                return TabBarItemWidget(
+                  eventDataModel: data,
+                  isSelected: currentIndex == categories.indexOf(data),
+                );
+              }).toList(),
             ),
           ),
           Expanded(

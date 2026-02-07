@@ -1,5 +1,6 @@
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/modules/add_event/add_event_.dart';
+import 'package:evently/modules/event_details/event_details.dart';
 import 'package:evently/modules/forget_password/forget_password.dart';
 import 'package:evently/modules/layout/layout.dart';
 import 'package:evently/modules/login/login_screen.dart';
@@ -22,6 +23,8 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (context) => Layout());
       case PagesRouteName.addEvent:
         return MaterialPageRoute(builder: (context)=>AddEvent());
+      case PagesRouteName.eventDetails:
+        return MaterialPageRoute(builder: (context) =>EventDetails());
       default:
         return MaterialPageRoute(builder: (context) => SplashScreen());
     }

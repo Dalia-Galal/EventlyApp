@@ -36,7 +36,7 @@ abstract class ThemeManager {
         fontSize: 16,
         fontWeight: FontWeight.w500,
         fontFamily: FontFamily.poppins,
-        color: ColorPalette.primaryLightColor
+        color: ColorPalette.primaryLightTextColor
       ),
       bodySmall: TextStyle(
         fontSize: 12,

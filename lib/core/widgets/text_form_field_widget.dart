@@ -12,6 +12,7 @@ class TextFormFieldWidget extends StatefulWidget {
   final Widget? suffixIcon;
   final bool isPassword;
   final String? Function(String?)? validator;
+  final int? maxLines;
   // final void Function(String)? onFieldSubmitted;
   const TextFormFieldWidget({
     super.key,
@@ -21,6 +22,7 @@ class TextFormFieldWidget extends StatefulWidget {
     this.suffixIcon,
     this.isPassword = false,
     this.validator,
+    this.maxLines,
     // this.onFieldSubmitted,
   });
 
@@ -44,10 +46,11 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
 
       decoration: InputDecoration(
         hintText: widget.hintText,
-        prefixIcon: Padding(
+        prefixIcon:( widget.prefixIcon != null)?
+        Padding(
           padding: EdgeInsetsGeometry.all(10),
           child: widget.prefixIcon,
-        ),
+        ):null,
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {
@@ -63,7 +66,6 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
                 ),
               )
             : null,
-
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(
@@ -80,7 +82,6 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             color: ColorPalette.strokeLightColor,
             width: 1,
           ),
-          gapPadding: 50,
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -92,6 +93,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         ),
       ),
       style: theme.textTheme.titleSmall,
+      maxLines: widget.isPassword?1: widget.maxLines,
     );
   }
 }
