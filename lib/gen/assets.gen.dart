@@ -43,6 +43,9 @@ class $AssetsIconsGen {
   SvgGenImage get clockLight =>
       const SvgGenImage('assets/icons/clock_light.svg');
 
+  /// File path: assets/icons/edit.svg
+  SvgGenImage get edit => const SvgGenImage('assets/icons/edit.svg');
+
   /// File path: assets/icons/eye-slash.svg
   SvgGenImage get eyeSlash => const SvgGenImage('assets/icons/eye-slash.svg');
 
@@ -97,6 +100,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/sun_light.svg
   SvgGenImage get sunLight => const SvgGenImage('assets/icons/sun_light.svg');
 
+  /// File path: assets/icons/trash.svg
+  SvgGenImage get trash => const SvgGenImage('assets/icons/trash.svg');
+
   /// File path: assets/icons/user_selected.svg
   SvgGenImage get userSelected =>
       const SvgGenImage('assets/icons/user_selected.svg');
@@ -118,6 +124,7 @@ class $AssetsIconsGen {
     calendarLight,
     clockDark,
     clockLight,
+    edit,
     eyeSlash,
     eye,
     googleIconLogoSvgrepoCom,
@@ -134,6 +141,7 @@ class $AssetsIconsGen {
     sportLight,
     sun,
     sunLight,
+    trash,
     userSelected,
     userUnSelceted,
     visibilityOff,

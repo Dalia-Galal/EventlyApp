@@ -5,7 +5,7 @@ import 'package:evently/core/widgets/elevated_button_widget.dart';
 import 'package:evently/core/widgets/text_form_field_widget.dart';
 import 'package:flutter/material.dart';
 import '../../gen/assets.gen.dart';
-import '../../models/event_data_model.dart';
+import '../../models/event_category_model.dart';
 import '../layout/home_view/widgets/TabBarItemWidget.dart';
 
 class AddEvent extends StatefulWidget {
@@ -19,22 +19,22 @@ class _AddEventState extends State<AddEvent> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  List<EventDataModel> categories = [
-    EventDataModel(
+  List<EventCategoryModel> categories = [
+    EventCategoryModel(
       id: 'sport',
       name: 'Sport',
       lightImage: Assets.images.sportLight.path,
       darkImage: Assets.images.sportDark.path,
       icon: Assets.icons.sportLight,
     ),
-    EventDataModel(
+    EventCategoryModel(
       id: 'birthday',
       name: 'Birthday',
       lightImage: Assets.images.birthdayLight.path,
       darkImage: Assets.images.birthdayDark.path,
       icon: Assets.icons.birthdayCakeLight,
     ),
-    EventDataModel(
+    EventCategoryModel(
       id: 'book_club',
       name: 'BookClub',
       lightImage: Assets.images.bookclubLight.path,
@@ -86,13 +86,12 @@ class _AddEventState extends State<AddEvent> {
                 overlayColor: WidgetStatePropertyAll(Colors.transparent),
                 tabs: categories.map((data) {
                   return TabBarItemWidget(
-                    eventDataModel: data,
+                    eventCategoryModel: data,
                     isSelected: currentIndex == categories.indexOf(data),
                   );
                 }).toList(),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Form(
@@ -169,10 +168,12 @@ class _AddEventState extends State<AddEvent> {
                     SizedBox(height: 24),
                     ElevatedButtonWidget(
                       onPressed: () {
-                      if(_formKey.currentState!.validate()){
-                        Navigator.pushNamed(context, PagesRouteName.eventDetails);
-                      }
-
+                        if (_formKey.currentState!.validate()) {
+                          Navigator.pushNamed(
+                            context,
+                            PagesRouteName.eventDetails,
+                          );
+                        }
                       },
                       customChild: Text(
                         AppStrings.addEvent,

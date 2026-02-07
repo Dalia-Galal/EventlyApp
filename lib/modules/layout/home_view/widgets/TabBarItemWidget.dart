@@ -1,14 +1,14 @@
-import 'package:evently/models/event_data_model.dart';
+import 'package:evently/models/event_category_model.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/app_theme/color_palette.dart';
 import '../../../../gen/assets.gen.dart';
 
 class TabBarItemWidget extends StatelessWidget {
-  final EventDataModel eventDataModel;
+  final EventCategoryModel eventCategoryModel;
   final bool isSelected;
   const TabBarItemWidget({
     super.key,
-    required this.eventDataModel,
+    required this.eventCategoryModel,
     required this.isSelected,
   });
 
@@ -27,7 +27,7 @@ class TabBarItemWidget extends StatelessWidget {
       child: Row(
         spacing: 8,
         children: [
-          eventDataModel.icon.svg(
+          eventCategoryModel.icon.svg(
             width: 24,
             height: 24,
             colorFilter: ColorFilter.mode(
@@ -38,7 +38,7 @@ class TabBarItemWidget extends StatelessWidget {
             ),
           ),
           Text(
-            eventDataModel.name,
+            eventCategoryModel.name,
             style: isSelected
                 ? theme.textTheme.titleMedium!.copyWith(
                     color: ColorPalette.primaryDarkTextColor,

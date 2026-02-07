@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../core/app_theme/color_palette.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../gen/assets.gen.dart';
-import '../../../models/event_data_model.dart';
+import '../../../models/event_category_model.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -15,22 +15,22 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List<EventDataModel> categories = [
-    EventDataModel(
+  List<EventCategoryModel> categories = [
+    EventCategoryModel(
       id: 'sport',
       name: 'Sport',
       lightImage: Assets.images.sportLight.path,
       darkImage: Assets.images.sportDark.path,
       icon: Assets.icons.sportLight,
     ),
-    EventDataModel(
+    EventCategoryModel(
       id: 'birthday',
       name: 'Birthday',
       lightImage: Assets.images.birthdayLight.path,
       darkImage: Assets.images.birthdayDark.path,
       icon: Assets.icons.birthdayCakeLight,
     ),
-    EventDataModel(
+    EventCategoryModel(
       id: 'book_club',
       name: 'BookClub',
       lightImage: Assets.images.bookclubLight.path,
@@ -95,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
               overlayColor: WidgetStatePropertyAll(Colors.transparent),
               tabs: categories.map((data) {
                 return TabBarItemWidget(
-                  eventDataModel: data,
+                  eventCategoryModel: data,
                   isSelected: currentIndex == categories.indexOf(data),
                 );
               }).toList(),
