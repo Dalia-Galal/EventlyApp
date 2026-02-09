@@ -94,6 +94,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       ),
       style: theme.textTheme.titleSmall,
       maxLines: widget.isPassword?1: widget.maxLines,
+
     );
   }
 }

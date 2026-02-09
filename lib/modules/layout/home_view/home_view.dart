@@ -42,7 +42,8 @@ class _HomeViewState extends State<HomeView> {
     ),
   ];
   int currentIndex = 0;
-
+  DateTime? selectedEventDate;
+ 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -104,7 +105,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           FutureBuilder(
-            future: FirestoreUtils.getDataFromFirestore(),
+            future: FirestoreUtils.getDataFromFirestore(categories[currentIndex].id),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
@@ -115,13 +116,16 @@ class _HomeViewState extends State<HomeView> {
               List<EventDataModel> data = snapshot.data ?? [];
               return Expanded(
                 child: ListView.separated(
-                  itemBuilder: (context, index) =>
-                      EventCardWidget(onTap:()
-                      {
-                        Navigator.pushNamed(
-                            context, PagesRouteName.eventDetails,arguments: data[index]);
-                      },
-                      dataModel: data[index]),
+                  itemBuilder: (context, index) => EventCardWidget(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        PagesRouteName.eventDetails,
+                        arguments: data[index],
+                      );
+                    },
+                    dataModel: data[index],
+                  ),
                   itemCount: data.length,
                   separatorBuilder: (context, index) => SizedBox(height: 16),
                 ),

@@ -15,18 +15,37 @@ abstract class FirestoreUtils {
 
   static Future<void> addEvent(EventDataModel data) async {
     var collectionRef = getCollectionReference();
-    var documentRef =collectionRef.doc();
-    data.eventId=documentRef.id;
+    var documentRef = collectionRef.doc();
+    data.eventId = documentRef.id;
     documentRef.set(data);
   }
 
-  static Future<List<EventDataModel>>getDataFromFirestore()async{
-    List<EventDataModel> eventsData=[];
-    var collectionRef = getCollectionReference();
-   var data = await collectionRef.get();
-   data.docs.map((e){
-    eventsData.add(e.data());
+  static Future<List<EventDataModel>> getDataFromFirestore(
+    String categoryId,
+  ) async {
+    List<EventDataModel> eventsData = [];
+    var collectionRef = getCollectionReference().where(
+      'eventCategoryId',
+      isEqualTo:categoryId ,
+    );
+    var data = await collectionRef.get();
+    data.docs.map((e) {
+      eventsData.add(e.data());
     }).toList();
-   return eventsData;
+    return eventsData;
+  }
+
+  static Future<void> updateEvent(EventDataModel data) async {
+    var collectionRef = getCollectionReference();
+    var documentRef = collectionRef.doc(data.eventId);
+
+    await documentRef.update(data.toFireStore());
+  }
+
+  static Future<void> deleteEvent(EventDataModel data) async {
+    var collectionRef = getCollectionReference();
+    var documentRef = collectionRef.doc(data.eventId);
+
+    await documentRef.delete();
   }
 }

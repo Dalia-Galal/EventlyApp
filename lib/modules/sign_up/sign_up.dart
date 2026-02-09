@@ -15,11 +15,11 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController(text: 'Dalia');
 
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController(text: 'dr.dalia galal@ yahoo.com');
 
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController(text: '1257Gy#02');
 
   final _formKey = GlobalKey<FormState>();
 
@@ -118,10 +118,11 @@ class _SignUpState extends State<SignUp> {
                   ElevatedButtonWidget(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        String name=   _nameController.text;
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           PagesRouteName.layout,
-                          (route) => false,
+                          (route) => false,arguments: name
                         );
                       }
                     },
