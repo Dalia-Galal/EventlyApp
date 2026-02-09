@@ -1,9 +1,14 @@
 import 'package:evently/core/app_theme/theme_manager.dart';
 import 'package:evently/core/routes/app_router.dart';
 import 'package:evently/core/routes/pages_route_name.dart';
+import 'package:evently/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 

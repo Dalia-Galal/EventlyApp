@@ -24,7 +24,7 @@ abstract class AppRouter {
       case PagesRouteName.addEvent:
         return MaterialPageRoute(builder: (context)=>AddEvent());
       case PagesRouteName.eventDetails:
-        return MaterialPageRoute(builder: (context) =>EventDetails());
+        return MaterialPageRoute(builder: (context) =>EventDetails(), settings: settings,);
       default:
         return MaterialPageRoute(builder: (context) => SplashScreen());
     }

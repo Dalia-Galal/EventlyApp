@@ -1,19 +1,50 @@
-import 'package:evently/gen/assets.gen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 class EventDataModel {
-  final String id;
-  final String name;
-  final String lightImage;
-  final String darkImage;
-  final SvgGenImage icon;
+  static const String collectionName='Events';
+  String? eventId;
+  String eventTitle;
+  String eventDescription;
+  DateTime eventDate;
+  String eventCategoryId;
+  String eventCategoryLightImage;
+  String eventCategoryDarkImage;
+  bool isFavorite;
+
   EventDataModel({
-    required this.id,
-    required this.name,
-    required this.lightImage,
-    required this.darkImage,
-    required this.icon,
+    this.eventId,
+    required this.eventTitle,
+    required this.eventDescription,
+    required this.eventDate,
+    required this.eventCategoryId,
+    required this.eventCategoryLightImage,
+    required this.eventCategoryDarkImage,
+    this.isFavorite = false,
   });
 
+  factory EventDataModel.fromFireStore(Map<String,dynamic>json){
+return EventDataModel(
+eventId: json['eventId'],
+    eventTitle: json['eventTitle'],
+    eventDescription: json['eventDescription'],
+    eventDate:DateTime.fromMillisecondsSinceEpoch( json['eventDate']),
+    eventCategoryId: json['eventCategoryId'],
+    eventCategoryLightImage: json['eventCategoryLightImage'],
+    eventCategoryDarkImage: json['eventCategoryDarkImage'],
+    isFavorite: json['isFavorite'],
+);
+
+  }
+
+  Map<String, dynamic> toFireStore() {
+    return {
+      'eventId': eventId,
+      'eventTitle': eventTitle,
+      'eventDescription': eventDescription,
+      'eventDate':eventDate.millisecondsSinceEpoch,
+      'eventCategoryId':eventCategoryId,
+      'eventCategoryLightImage':eventCategoryLightImage,
+      'eventCategoryDarkImage':eventCategoryDarkImage,
+      'isFavorite':isFavorite
+    };
+  }
+  
 }

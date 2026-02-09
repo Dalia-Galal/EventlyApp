@@ -3,7 +3,10 @@ import 'package:evently/core/constants/app_strings.dart';
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
 import 'package:evently/core/widgets/text_form_field_widget.dart';
+import 'package:evently/models/event_data_model.dart';
+import 'package:evently/utils/firestore_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/event_category_model.dart';
 import '../layout/home_view/widgets/TabBarItemWidget.dart';
@@ -43,6 +46,7 @@ class _AddEventState extends State<AddEvent> {
     ),
   ];
   int currentIndex = 0;
+  DateTime? selectedEventDate;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -134,12 +138,21 @@ class _AddEventState extends State<AddEvent> {
                             style: theme.textTheme.titleMedium,
                           ),
                         ),
-                        Text(
-                          AppStrings.chooseDate,
-                          style: theme.textTheme.titleSmall!.copyWith(
-                            color: ColorPalette.primaryLightColor,
-                            decoration: TextDecoration.underline,
-                            decorationColor: ColorPalette.primaryLightColor,
+                        InkWell(
+                          onTap: () {
+                            getSelectedDate();
+                          },
+                          child: Text(
+                            (selectedEventDate != null)
+                                ? DateFormat(
+                                    'dd MMM yyyy',
+                                  ).format(selectedEventDate!)
+                                : AppStrings.chooseDate,
+                            style: theme.textTheme.titleSmall!.copyWith(
+                              color: ColorPalette.primaryLightColor,
+                              decoration: TextDecoration.underline,
+                              decorationColor: ColorPalette.primaryLightColor,
+                            ),
                           ),
                         ),
                       ],
@@ -169,12 +182,27 @@ class _AddEventState extends State<AddEvent> {
                     ElevatedButtonWidget(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
+                          if (selectedEventDate == null) {
+                            return;
+                          }
                           Navigator.pushNamed(
                             context,
-                            PagesRouteName.eventDetails,
+                            PagesRouteName.layout,
                           );
+                          EventDataModel data = EventDataModel(
+                            eventCategoryDarkImage:
+                                categories[currentIndex].darkImage,
+                            eventTitle: _titleController.text,
+                            eventDescription: _descriptionController.text,
+                            eventDate: selectedEventDate!,
+                            eventCategoryId: categories[currentIndex].id,
+                            eventCategoryLightImage:
+                                categories[currentIndex].lightImage,
+                          );
+                          FirestoreUtils.addEvent(data);
                         }
                       },
+
                       customChild: Text(
                         AppStrings.addEvent,
                         style: theme.textTheme.titleLarge!.copyWith(
@@ -190,5 +218,16 @@ class _AddEventState extends State<AddEvent> {
         ),
       ),
     );
+  }
+
+  void getSelectedDate() async {
+    var showCurrentDate = await showDatePicker(
+      context: context,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+    );
+    setState(() {
+      selectedEventDate = showCurrentDate;
+    });
   }
 }

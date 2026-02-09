@@ -1,14 +1,18 @@
+import 'package:evently/utils/firestore_utils.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../../core/app_theme/color_palette.dart';
 import '../../core/constants/app_strings.dart';
 import '../../gen/assets.gen.dart';
+import '../../models/event_data_model.dart';
 
 class EventDetails extends StatelessWidget {
   const EventDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
+    EventDataModel eventData =
+        ModalRoute.of(context)!.settings.arguments as EventDataModel;
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -16,7 +20,9 @@ class EventDetails extends StatelessWidget {
         title: Text(AppStrings.eventDetails),
         centerTitle: true,
         actions: [
-          Assets.icons.edit.svg(),
+          InkWell(onTap:(){
+            FirestoreUtils.getDataFromFirestore();
+          },child:Assets.icons.edit.svg(),),
           SizedBox(width: 10),
           Assets.icons.trash.svg(),
         ],
@@ -37,11 +43,11 @@ class EventDetails extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: ColorPalette.strokeLightColor),
                 image: DecorationImage(
-                  image: Assets.images.birthdayLight.provider(),
+                  image: AssetImage(eventData.eventCategoryLightImage),
                 ),
               ),
             ),
-            Text('We’re going to play football '),
+            Text(eventData.eventTitle),
             Container(
               height: 80,
               width: double.infinity,
@@ -72,7 +78,10 @@ class EventDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
 
                     children: [
-                      Text('January', style: theme.textTheme.titleMedium),
+                      Text(
+                        DateFormat('dd MMM').format(eventData.eventDate),
+                        style: theme.textTheme.titleMedium,
+                      ),
                       Text(
                         '12.12pm',
                         style: theme.textTheme.titleMedium!.copyWith(
@@ -95,7 +104,7 @@ class EventDetails extends StatelessWidget {
                 border: Border.all(color: ColorPalette.strokeLightColor),
               ),
               child: Text(
-                'Lorem ipsum dolor sit amet consectetur. Vulputate eleifend suscipit eget neque senectus a. Nulla at non malesuada odio duis lectus amet nisi sit. Risus hac enim maecenas auctor et. At cras massa diam porta facilisi lacus purus. Iaculis eget quis ut amet. Sit ac malesuada nisi quis  feugiat.',
+                eventData.eventDescription,
                 style: theme.textTheme.titleSmall,
                 textAlign: TextAlign.justify,
               ),

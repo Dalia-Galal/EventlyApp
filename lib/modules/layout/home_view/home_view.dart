@@ -1,6 +1,9 @@
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/event_card_widget.dart';
+import 'package:evently/models/event_data_model.dart';
 import 'package:evently/modules/layout/home_view/widgets/TabBarItemWidget.dart';
+import 'package:evently/utils/firestore_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../core/app_theme/color_palette.dart';
 import '../../../core/constants/app_strings.dart';
@@ -38,7 +41,6 @@ class _HomeViewState extends State<HomeView> {
       icon: Assets.icons.bookLight,
     ),
   ];
-
   int currentIndex = 0;
 
   @override
@@ -101,12 +103,30 @@ class _HomeViewState extends State<HomeView> {
               }).toList(),
             ),
           ),
-          Expanded(
-            child: ListView.separated(
-              itemBuilder: (context, index) => EventCardWidget(),
-              itemCount: 5,
-              separatorBuilder: (context, index) => SizedBox(height: 16),
-            ),
+          FutureBuilder(
+            future: FirestoreUtils.getDataFromFirestore(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text(snapshot.error.toString());
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+              List<EventDataModel> data = snapshot.data ?? [];
+              return Expanded(
+                child: ListView.separated(
+                  itemBuilder: (context, index) =>
+                      EventCardWidget(onTap:()
+                      {
+                        Navigator.pushNamed(
+                            context, PagesRouteName.eventDetails,arguments: data[index]);
+                      },
+                      dataModel: data[index]),
+                  itemCount: data.length,
+                  separatorBuilder: (context, index) => SizedBox(height: 16),
+                ),
+              );
+            },
           ),
         ],
       ),
