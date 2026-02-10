@@ -188,7 +188,7 @@ class _EditEventState extends State<EditEvent> {
                           if (selectedEventDate == null) {
                             return;
                           }
-                          Navigator.pop(context, PagesRouteName.layout);
+                          Navigator.pushNamedAndRemoveUntil(context, PagesRouteName.layout,(route) => false,);
                           EventDataModel data = EventDataModel(
                             eventId: eventData.eventId,
                             eventCategoryDarkImage:

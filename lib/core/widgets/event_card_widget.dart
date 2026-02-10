@@ -1,6 +1,7 @@
 import 'package:evently/core/app_theme/color_palette.dart';
 import 'package:evently/core/constants/app_strings.dart';
 import 'package:evently/models/event_data_model.dart';
+import 'package:evently/utils/firestore_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -54,9 +55,15 @@ class EventCardWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(child: Text(dataModel.eventDescription)),
-                  (dataModel.isFavorite==true)
+
+                  GestureDetector(
+                   onTap: (){
+                    dataModel.isFavorite = !dataModel.isFavorite;
+                    FirestoreUtils.updateEvent(dataModel);
+                   },
+                   child:(dataModel.isFavorite)
                       ? Assets.icons.heartSelected.svg()
-                      : Assets.icons.heartUnSelected.svg(),
+                      : Assets.icons.heartUnSelected.svg(),)
                 ],
               ),
             ),

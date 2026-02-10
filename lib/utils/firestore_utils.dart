@@ -26,13 +26,24 @@ abstract class FirestoreUtils {
     List<EventDataModel> eventsData = [];
     var collectionRef = getCollectionReference().where(
       'eventCategoryId',
-      isEqualTo:categoryId ,
+      isEqualTo: categoryId,
     );
     var data = await collectionRef.get();
     data.docs.map((e) {
       eventsData.add(e.data());
     }).toList();
     return eventsData;
+  }
+
+  static Stream<QuerySnapshot<EventDataModel>> getStreamDataFromFirestore(
+    String categoryId,
+  ) {
+    var collectionRef = getCollectionReference().where(
+      'eventCategoryId',
+      isEqualTo: categoryId,
+    );
+
+    return collectionRef.snapshots();
   }
 
   static Future<void> updateEvent(EventDataModel data) async {

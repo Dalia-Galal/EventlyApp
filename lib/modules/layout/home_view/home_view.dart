@@ -104,35 +104,36 @@ class _HomeViewState extends State<HomeView> {
               }).toList(),
             ),
           ),
-          FutureBuilder(
-            future: FirestoreUtils.getDataFromFirestore(categories[currentIndex].id),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text(snapshot.error.toString());
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              }
-              List<EventDataModel> data = snapshot.data ?? [];
-              return Expanded(
-                child: ListView.separated(
-                  itemBuilder: (context, index) => EventCardWidget(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        PagesRouteName.eventDetails,
-                        arguments: data[index],
-                      );
-                    },
-                    dataModel: data[index],
-                  ),
-                  itemCount: data.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 16),
-                ),
-              );
-            },
-          ),
-        ],
+         StreamBuilder(
+           stream: FirestoreUtils.getStreamDataFromFirestore(categories[currentIndex].id) ,
+           builder: (context, snapshot) {
+             if (snapshot.hasError) {
+               return Text(snapshot.error.toString());
+             }
+             if (snapshot.connectionState == ConnectionState.waiting) {
+               return CircularProgressIndicator();
+             }
+             List<EventDataModel> data = snapshot.data!.docs.map((e){
+               return e.data();
+             }).toList();
+             return Expanded(
+               child: ListView.separated(
+                 itemBuilder: (context, index) =>
+                     EventCardWidget(
+                       onTap: () {
+                         Navigator.pushNamed(
+                           context,
+                           PagesRouteName.eventDetails,
+                           arguments: data[index],
+                         );
+                       },
+                       dataModel: data[index],
+                     ),
+                 itemCount: data.length,
+                 separatorBuilder: (context, index) => SizedBox(height: 16),
+               ),
+             );
+           })],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
