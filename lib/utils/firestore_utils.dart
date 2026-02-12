@@ -45,7 +45,15 @@ abstract class FirestoreUtils {
 
     return collectionRef.snapshots();
   }
+  static Stream<QuerySnapshot<EventDataModel>> getStreamFavoriteDataFromFirestore(
+      ) {
+    var collectionRef = getCollectionReference().where(
+      'isFavorite',
+      isEqualTo: true
+    );
 
+    return collectionRef.snapshots();
+  }
   static Future<void> updateEvent(EventDataModel data) async {
     var collectionRef = getCollectionReference();
     var documentRef = collectionRef.doc(data.eventId);

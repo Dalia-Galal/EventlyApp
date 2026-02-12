@@ -84,6 +84,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/moon_light.svg
   SvgGenImage get moonLight => const SvgGenImage('assets/icons/moon_light.svg');
 
+  /// File path: assets/icons/search.svg
+  SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
+
   /// File path: assets/icons/sms.svg
   SvgGenImage get sms => const SvgGenImage('assets/icons/sms.svg');
 
@@ -136,6 +139,7 @@ class $AssetsIconsGen {
     lock,
     moonDark,
     moonLight,
+    search,
     sms,
     sportDark,
     sportLight,

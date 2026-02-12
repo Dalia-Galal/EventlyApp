@@ -49,6 +49,7 @@ class _HomeViewState extends State<HomeView> {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Row(
           children: [
             Expanded(

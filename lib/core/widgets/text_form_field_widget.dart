@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../gen/assets.gen.dart';
 import '../app_theme/color_palette.dart';
-import '../constants/app_strings.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
   final String? hintText;
@@ -14,6 +12,8 @@ class TextFormFieldWidget extends StatefulWidget {
   final String? Function(String?)? validator;
   final int? maxLines;
   // final void Function(String)? onFieldSubmitted;
+  final Function? onPressed;
+  final Function(String)? onChanged;
   const TextFormFieldWidget({
     super.key,
     this.hintText,
@@ -24,6 +24,8 @@ class TextFormFieldWidget extends StatefulWidget {
     this.validator,
     this.maxLines,
     // this.onFieldSubmitted,
+    this.onPressed,
+    this.onChanged,
   });
 
   @override
@@ -39,18 +41,23 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     return TextFormField(
       controller: widget.controller,
       validator: widget.validator,
-     // onFieldSubmitted: widget.onFieldSubmitted,
-     // autovalidateMode: AutovalidateMode.onUserInteraction,
+      // onFieldSubmitted: widget.onFieldSubmitted,
+      onChanged: (value) {
+        widget.onChanged?.call(value);
+      },
+
+      // autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: widget.isPassword ? obscureText : false,
       cursorColor: ColorPalette.strokeLightColor,
 
       decoration: InputDecoration(
         hintText: widget.hintText,
-        prefixIcon:( widget.prefixIcon != null)?
-        Padding(
-          padding: EdgeInsetsGeometry.all(10),
-          child: widget.prefixIcon,
-        ):null,
+        prefixIcon: (widget.prefixIcon != null)
+            ? Padding(
+                padding: EdgeInsetsGeometry.all(10),
+                child: widget.prefixIcon,
+              )
+            : null,
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {
@@ -63,6 +70,18 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
                   child: obscureText
                       ? Assets.icons.eye.svg(width: 24, height: 24)
                       : Assets.icons.eyeSlash.svg(width: 24, height: 24),
+                ),
+              )
+            : (widget.suffixIcon != null)
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    widget.onPressed!.call();
+                  });
+                },
+                icon: Padding(
+                  padding: EdgeInsetsGeometry.all(10),
+                  child: widget.suffixIcon,
                 ),
               )
             : null,
@@ -93,8 +112,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         ),
       ),
       style: theme.textTheme.titleSmall,
-      maxLines: widget.isPassword?1: widget.maxLines,
-
+      maxLines: widget.isPassword ? 1 : widget.maxLines,
     );
   }
 }
