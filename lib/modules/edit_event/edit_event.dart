@@ -9,6 +9,7 @@ import '../../core/widgets/text_form_field_widget.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/event_category_model.dart';
 import '../../models/event_data_model.dart';
+import '../../services/snack_bar_services.dart';
 import '../../utils/firestore_utils.dart';
 import '../layout/home_view/widgets/TabBarItemWidget.dart';
 
@@ -75,7 +76,8 @@ class _EditEventState extends State<EditEvent> {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: ColorPalette.strokeLightColor),
                 image: DecorationImage(
-                  image: AssetImage(categories[currentIndex].lightImage),fit: BoxFit.cover
+                  image: AssetImage(categories[currentIndex].lightImage),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -148,9 +150,11 @@ class _EditEventState extends State<EditEvent> {
                             getSelectedDate();
                           },
                           child: Text(
-                              DateFormat(
-                            'dd MMM',
-                          ).format(selectedEventDate ==null?eventData.eventDate:selectedEventDate!) ,
+                            DateFormat('dd MMM').format(
+                              selectedEventDate == null
+                                  ? eventData.eventDate
+                                  : selectedEventDate!,
+                            ),
                             style: theme.textTheme.titleSmall!.copyWith(
                               color: ColorPalette.primaryLightColor,
                               decoration: TextDecoration.underline,
@@ -186,9 +190,18 @@ class _EditEventState extends State<EditEvent> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           if (selectedEventDate == null) {
+                            SnackBarServices.showSuccessMessage(
+                                'event did not edited',);
                             return;
                           }
-                          Navigator.pushNamedAndRemoveUntil(context, PagesRouteName.layout,(route) => false,);
+                          SnackBarServices.showSuccessMessage(
+                            'Event edited Successfully',
+                          );
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            PagesRouteName.layout,
+                            (route) => false,
+                          );
                           EventDataModel data = EventDataModel(
                             eventId: eventData.eventId,
                             eventCategoryDarkImage:

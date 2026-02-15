@@ -3,8 +3,14 @@ import 'package:evently/core/constants/app_strings.dart';
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
 import 'package:evently/core/widgets/text_form_field_widget.dart';
+import 'package:evently/models/event_data_model.dart';
+import 'package:evently/models/user_data_model.dart';
+import 'package:evently/utils/firebase_authentication_utils.dart';
+import 'package:evently/utils/firestore_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../gen/assets.gen.dart';
+import '../../services/snack_bar_services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,8 +22,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _emailController = TextEditingController(text: 'Dalia@gmail.com');
-  final TextEditingController _passwordController = TextEditingController(text: 'kfj1Rt#123');
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -100,14 +106,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 20),
                   ElevatedButtonWidget(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          PagesRouteName.layout,
-                          (route) => false,
-                        );
+                        UserDataModel? user =
+                            await FirebaseAuthenticationUtils.signInWithEmailAndPassword(
+                              _emailController.text,
+                              _passwordController.text,
+                            );
+                        if (user != null) {
+                          print(user.userName);
+                          SnackBarServices.showSuccessMessage(
+                            'you are now logged in',
+                          );
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            PagesRouteName.layout,
+                            (route) => false,
+                            arguments: user,
+                          );
+                        }
                       }
+
                     },
                     buttonText: AppStrings.login,
                   ),

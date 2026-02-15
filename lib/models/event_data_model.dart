@@ -1,5 +1,5 @@
 class EventDataModel {
-  static const String collectionName='Events';
+  static const String collectionName = 'Events';
   String? eventId;
   String eventTitle;
   String eventDescription;
@@ -20,18 +20,17 @@ class EventDataModel {
     this.isFavorite = false,
   });
 
-  factory EventDataModel.fromFireStore(Map<String,dynamic>json){
-return EventDataModel(
-eventId: json['eventId'],
-    eventTitle: json['eventTitle'],
-    eventDescription: json['eventDescription'],
-    eventDate:DateTime.fromMillisecondsSinceEpoch( json['eventDate']),
-    eventCategoryId: json['eventCategoryId'],
-    eventCategoryLightImage: json['eventCategoryLightImage'],
-    eventCategoryDarkImage: json['eventCategoryDarkImage'],
-    isFavorite: json['isFavorite'],
-);
-
+  factory EventDataModel.fromFireStore(Map<String, dynamic> json) {
+    return EventDataModel(
+      eventId: json['eventId'],
+      eventTitle: json['eventTitle'],
+      eventDescription: json['eventDescription'],
+      eventDate: DateTime.fromMillisecondsSinceEpoch(json['eventDate']),
+      eventCategoryId: json['eventCategoryId'],
+      eventCategoryLightImage: json['eventCategoryLightImage'],
+      eventCategoryDarkImage: json['eventCategoryDarkImage'],
+      isFavorite: json['isFavorite'],
+    );
   }
 
   Map<String, dynamic> toFireStore() {
@@ -39,12 +38,11 @@ eventId: json['eventId'],
       'eventId': eventId,
       'eventTitle': eventTitle,
       'eventDescription': eventDescription,
-      'eventDate':eventDate.millisecondsSinceEpoch,
-      'eventCategoryId':eventCategoryId,
-      'eventCategoryLightImage':eventCategoryLightImage,
-      'eventCategoryDarkImage':eventCategoryDarkImage,
-      'isFavorite':isFavorite
+      'eventDate': eventDate.millisecondsSinceEpoch,
+      'eventCategoryId': eventCategoryId,
+      'eventCategoryLightImage': eventCategoryLightImage,
+      'eventCategoryDarkImage': eventCategoryDarkImage,
+      'isFavorite': isFavorite,
     };
   }
-  
 }

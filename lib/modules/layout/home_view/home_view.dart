@@ -1,6 +1,7 @@
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/event_card_widget.dart';
 import 'package:evently/models/event_data_model.dart';
+import 'package:evently/models/user_data_model.dart';
 import 'package:evently/modules/layout/home_view/widgets/TabBarItemWidget.dart';
 import 'package:evently/utils/firestore_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -43,9 +44,11 @@ class _HomeViewState extends State<HomeView> {
   ];
   int currentIndex = 0;
   DateTime? selectedEventDate;
- 
+  late UserDataModel
+  user =  ModalRoute.of(context)!.settings.arguments as UserDataModel;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {print(user);
     var theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -57,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(AppStrings.welcome, style: theme.textTheme.titleSmall),
-                  Text('John Safwat', style: theme.textTheme.titleLarge),
+                  Text(user.userName, style: theme.textTheme.titleLarge),
                 ],
               ),
             ),
