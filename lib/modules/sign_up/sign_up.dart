@@ -1,3 +1,6 @@
+import 'package:evently/models/user_data_model.dart';
+import 'package:evently/services/snack_bar_services.dart';
+import 'package:evently/utils/firebase_authentication_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/app_theme/color_palette.dart';
@@ -15,11 +18,13 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final TextEditingController _nameController = TextEditingController(text: 'Dalia');
+  final TextEditingController _nameController = TextEditingController();
 
-  final TextEditingController _emailController = TextEditingController(text: 'dr.dalia galal@ yahoo.com');
+  final TextEditingController _emailController = TextEditingController();
 
-  final TextEditingController _passwordController = TextEditingController(text: '1257Gy#02');
+  final TextEditingController _passwordController = TextEditingController(
+    // text: '1257Gy#02',
+  );
 
   final _formKey = GlobalKey<FormState>();
 
@@ -60,6 +65,7 @@ class _SignUpState extends State<SignUp> {
                       if (value.length < 3) {
                         return 'Name must be at least 3 letters';
                       }
+                      return null;
                     },
                   ),
                   SizedBox(height: 20),
@@ -116,15 +122,26 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(height: 20),
                   SizedBox(height: 20),
                   ElevatedButtonWidget(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        String name=   _nameController.text;
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          PagesRouteName.layout,
-                          (route) => false,arguments: name
-                        );
-                      }
+                        UserDataModel? user =
+                            await FirebaseAuthenticationUtils.createUserWithEmailAndPassword(
+                              _nameController.text,
+                              _emailController.text,
+                              _passwordController.text,
+                            );
+                        if (user != null) {
+                          SnackBarServices.showSuccessMessage(
+                            'Account created',
+                          );
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            PagesRouteName.layout,
+                            (route) => false,
+                            arguments: user,
+                          );
+                        }
+                      } else {}
                     },
                     buttonText: AppStrings.signUP,
                   ),

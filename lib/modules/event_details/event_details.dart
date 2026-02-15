@@ -36,10 +36,9 @@ class EventDetails extends StatelessWidget {
           InkWell(
             onTap: () {
               FirestoreUtils.deleteEvent(eventData);
-              Navigator.pushNamed(
+              Navigator.pop(
                 context,
                 PagesRouteName.layout,
-                arguments: eventData,
               );
             },
             child: Assets.icons.trash.svg(),
@@ -96,7 +95,6 @@ class EventDetails extends StatelessWidget {
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-          
                       children: [
                         Text(
                           DateFormat('dd MMM').format(eventData.eventDate),

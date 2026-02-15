@@ -4,8 +4,10 @@ import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
 import 'package:evently/core/widgets/text_form_field_widget.dart';
 import 'package:evently/models/event_data_model.dart';
+import 'package:evently/services/snack_bar_services.dart';
 import 'package:evently/utils/firestore_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/event_category_model.dart';
@@ -185,10 +187,8 @@ class _AddEventState extends State<AddEvent> {
                           if (selectedEventDate == null) {
                             return;
                           }
-                          Navigator.pushNamed(
-                            context,
-                            PagesRouteName.layout,
-                          );
+                          SnackBarServices.showSuccessMessage('Event added');
+                          Navigator.pop(context, PagesRouteName.layout);
                           EventDataModel data = EventDataModel(
                             eventCategoryDarkImage:
                                 categories[currentIndex].darkImage,
@@ -199,10 +199,15 @@ class _AddEventState extends State<AddEvent> {
                             eventCategoryLightImage:
                                 categories[currentIndex].lightImage,
                           );
-                          FirestoreUtils.addEvent(data);
+                          EasyLoading.show();
+                          Future.delayed(Duration(seconds:0),(){
+                          FirestoreUtils.addEvent(data).then((value) {
+                          EasyLoading.dismiss();
+                          });
+                          });
+
                         }
                       },
-
                       customChild: Text(
                         AppStrings.addEvent,
                         style: theme.textTheme.titleLarge!.copyWith(

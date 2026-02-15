@@ -1,5 +1,7 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently/models/event_data_model.dart';
+import 'package:evently/models/user_data_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 abstract class FirestoreUtils {
@@ -66,5 +68,27 @@ abstract class FirestoreUtils {
     var documentRef = collectionRef.doc(data.eventId);
 
     await documentRef.delete();
+  }
+
+  static CollectionReference<UserDataModel> getCollectionReferenceForUser() {
+    return FirebaseFirestore.instance
+        .collection(UserDataModel.collectionName)
+        .withConverter<UserDataModel>(
+      fromFirestore: (snapshot, _) =>
+          UserDataModel.fromFireStore(snapshot.data()!),
+      toFirestore: (value, _) => value.toFireStore(),
+    );
+  }
+  static Future<void> addUser(UserDataModel user) async {
+    var collectionRef = getCollectionReferenceForUser();
+    var documentRef = collectionRef.doc(user.userId);
+
+   await documentRef.set(user);
+  }
+  static Future<UserDataModel?> getUserFromFirestore(
+      String userId,
+      ) async {
+    var doc = await getCollectionReferenceForUser().doc(userId).get();
+    return doc.data();
   }
 }
