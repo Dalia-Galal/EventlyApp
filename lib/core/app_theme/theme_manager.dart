@@ -53,4 +53,54 @@ abstract class ThemeManager {
        unselectedLabelStyle: const TextStyle(fontSize: 12),
       ),
   );
+
+  static ThemeData themeDataDark = ThemeData(
+    scaffoldBackgroundColor:ColorPalette.backgroundDarkColor,
+    primaryColor:ColorPalette.primaryDarkColor,
+    useMaterial3: true,
+    textTheme: TextTheme(
+        headlineSmall: TextStyle(
+          fontFamily:'Poppins',
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: ColorPalette.primaryDarkColor,
+        ),
+        titleLarge: TextStyle(
+          fontFamily:FontFamily.poppins,
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
+          color: ColorPalette.primaryDarkTextColor,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: ColorPalette.primaryDarkTextColor,
+        ),
+        titleSmall: TextStyle(
+            fontSize: 14,
+            fontFamily:FontFamily.poppins,
+            fontWeight: FontWeight.w400,
+            color: ColorPalette.primaryDarkTextColor
+        ),
+        titleMedium: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            fontFamily: FontFamily.poppins,
+            color: ColorPalette.primaryDarkTextColor
+        ),
+        bodySmall: TextStyle(
+          fontSize: 12,
+        )
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: ColorPalette.backgroundDarkColor,
+      type: BottomNavigationBarType.fixed,
+      selectedIconTheme: const IconThemeData(size: 24,),
+      unselectedIconTheme: const IconThemeData(size: 12),
+      selectedItemColor: ColorPalette.primaryDarkColor,
+      unselectedItemColor: ColorPalette.disabledColor,
+      selectedLabelStyle: const TextStyle(fontSize: 12),
+      unselectedLabelStyle: const TextStyle(fontSize: 12),
+    ),
+  );
 }
