@@ -8,6 +8,7 @@ class EventDataModel {
   String eventCategoryLightImage;
   String eventCategoryDarkImage;
   bool isFavorite;
+  String? ownerId;
 
   EventDataModel({
     this.eventId,
@@ -18,6 +19,7 @@ class EventDataModel {
     required this.eventCategoryLightImage,
     required this.eventCategoryDarkImage,
     this.isFavorite = false,
+    this.ownerId,
   });
 
   factory EventDataModel.fromFireStore(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class EventDataModel {
       eventCategoryLightImage: json['eventCategoryLightImage'],
       eventCategoryDarkImage: json['eventCategoryDarkImage'],
       isFavorite: json['isFavorite'],
+      ownerId: json['ownerId']
     );
   }
 
@@ -43,6 +46,7 @@ class EventDataModel {
       'eventCategoryLightImage': eventCategoryLightImage,
       'eventCategoryDarkImage': eventCategoryDarkImage,
       'isFavorite': isFavorite,
+      'ownerId' :ownerId,
     };
   }
 }

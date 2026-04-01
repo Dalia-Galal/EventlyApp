@@ -1,7 +1,7 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently/models/event_data_model.dart';
 import 'package:evently/models/user_data_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 abstract class FirestoreUtils {
@@ -18,6 +18,7 @@ abstract class FirestoreUtils {
   static Future<void> addEvent(EventDataModel data) async {
     var collectionRef = getCollectionReference();
     var documentRef = collectionRef.doc();
+    data.ownerId = FirebaseAuth.instance.currentUser!.uid;
     data.eventId = documentRef.id;
     documentRef.set(data);
   }
@@ -40,22 +41,25 @@ abstract class FirestoreUtils {
   static Stream<QuerySnapshot<EventDataModel>> getStreamDataFromFirestore(
     String categoryId,
   ) {
-    var collectionRef = getCollectionReference().where(
-      'eventCategoryId',
-      isEqualTo: categoryId,
-    );
+    var user = FirebaseAuth.instance.currentUser;
+    var collectionRef = getCollectionReference()
+        .where('eventCategoryId', isEqualTo: categoryId)
+        .where('ownerId', isEqualTo: user!.uid);
 
     return collectionRef.snapshots();
   }
-  static Stream<QuerySnapshot<EventDataModel>> getStreamFavoriteDataFromFirestore(
-      ) {
-    var collectionRef = getCollectionReference().where(
-      'isFavorite',
-      isEqualTo: true
-    );
+
+  static Stream<QuerySnapshot<EventDataModel>>
+  getStreamFavoriteDataFromFirestore() {
+    var user = FirebaseAuth.instance.currentUser;
+
+    var collectionRef = getCollectionReference()
+        .where('isFavorite', isEqualTo: true)
+        .where('ownerId', isEqualTo: user!.uid);
 
     return collectionRef.snapshots();
   }
+
   static Future<void> updateEvent(EventDataModel data) async {
     var collectionRef = getCollectionReference();
     var documentRef = collectionRef.doc(data.eventId);
@@ -74,20 +78,20 @@ abstract class FirestoreUtils {
     return FirebaseFirestore.instance
         .collection(UserDataModel.collectionName)
         .withConverter<UserDataModel>(
-      fromFirestore: (snapshot, _) =>
-          UserDataModel.fromFireStore(snapshot.data()!),
-      toFirestore: (value, _) => value.toFireStore(),
-    );
+          fromFirestore: (snapshot, _) =>
+              UserDataModel.fromFireStore(snapshot.data()!),
+          toFirestore: (value, _) => value.toFireStore(),
+        );
   }
+
   static Future<void> addUser(UserDataModel user) async {
     var collectionRef = getCollectionReferenceForUser();
     var documentRef = collectionRef.doc(user.userId);
 
-   await documentRef.set(user);
+    await documentRef.set(user);
   }
-  static Future<UserDataModel?> getUserFromFirestore(
-      String userId,
-      ) async {
+
+  static Future<UserDataModel?> getUserFromFirestore(String userId) async {
     var doc = await getCollectionReferenceForUser().doc(userId).get();
     return doc.data();
   }
