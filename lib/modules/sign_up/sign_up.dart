@@ -1,17 +1,20 @@
+import 'package:evently/core/l10n/app_localizations.dart';
+import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:evently/models/user_data_model.dart';
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/services/snack_bar_services.dart';
 import 'package:evently/utils/firebase_authentication_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/app_theme/color_palette.dart';
-import '../../core/constants/app_strings.dart';
 import '../../core/routes/pages_route_name.dart';
 import '../../core/widgets/elevated_button_widget.dart';
 import '../../core/widgets/text_form_field_widget.dart';
 import '../../gen/assets.gen.dart';
 
 class SignUp extends StatefulWidget {
-  SignUp({super.key});
+  const SignUp({super.key});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -31,6 +34,9 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    var appLocal = AppLocalizations.of(context);
+    final provider = Provider.of<AppProvider>(context);
+    bool isDark = provider.currentThemeMode == ThemeMode.dark;
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -43,20 +49,20 @@ class _SignUpState extends State<SignUp> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Image.asset(
-                    Assets.images.eventelyLight.path,
+                   isDark?Assets.images.eventelyDark.path: Assets.images.eventelyLight.path,
                     width: 142,
                     height: 27,
                   ),
                   SizedBox(height: 20),
                   Text(
-                    AppStrings.createYourAccount,
+                    appLocal!.createYourAccount,
                     style: theme.textTheme.headlineSmall,
                   ),
                   SizedBox(height: 20),
 
                   TextFormFieldWidget(
                     prefixIcon: $AssetsIconsGen().userUnSelceted.svg(),
-                    hintText: AppStrings.enterYourName,
+                    hintText: appLocal.enterYourName,
                     controller: _nameController,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -71,7 +77,7 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(height: 20),
                   TextFormFieldWidget(
                     prefixIcon: $AssetsIconsGen().sms.svg(),
-                    hintText: AppStrings.enterYourEmail,
+                    hintText: appLocal.enterYourEmail,
                     controller: _emailController,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -89,7 +95,7 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(height: 20),
                   TextFormFieldWidget(
                     prefixIcon: Assets.icons.lock.svg(),
-                    hintText: AppStrings.enterYourPassword,
+                    hintText: appLocal.enterYourPassword,
                     controller: _passwordController,
                     isPassword: true,
                     validator: (value) {
@@ -108,7 +114,7 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(height: 20),
                   TextFormFieldWidget(
                     prefixIcon: Assets.icons.lock.svg(),
-                    hintText: AppStrings.confirmYourPassword,
+                    hintText: appLocal.confirmYourPassword,
                     isPassword: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -117,33 +123,38 @@ class _SignUpState extends State<SignUp> {
                       if (value != _passwordController.text) {
                         return 'Passwords do not match';
                       }
+                      return null;
                     },
                   ),
                   SizedBox(height: 20),
                   SizedBox(height: 20),
-                  ElevatedButtonWidget(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        UserDataModel? user =
-                            await FirebaseAuthenticationUtils.createUserWithEmailAndPassword(
-                              _nameController.text,
-                              _emailController.text,
-                              _passwordController.text,
-                            );
-                        if (user != null) {
-                          SnackBarServices.showSuccessMessage(
-                            'Account created',
-                          );
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            PagesRouteName.layout,
-                            (route) => false,
-                            arguments: user,
-                          );
-                        }
-                      } else {}
-                    },
-                    buttonText: AppStrings.signUP,
+                  Consumer<AuthenticationProvider>(
+                    builder: (context,auth,_) {
+                      return ElevatedButtonWidget(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+
+                                await FirebaseAuthenticationUtils.createUserWithEmailAndPassword(
+                                  _nameController.text,
+                                  _emailController.text,
+                                  _passwordController.text,
+                                );
+                            if (auth.user != null) {
+                              SnackBarServices.showSuccessMessage(
+                                'Account created',
+                              );
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                PagesRouteName.layout,
+                                (route) => false,
+                                arguments: auth.user,
+                              );
+                            }
+                          } else {}
+                        },
+                        buttonText: appLocal.signUP,
+                      );
+                    }
                   ),
                   SizedBox(height: 20),
                   RichText(
@@ -151,7 +162,7 @@ class _SignUpState extends State<SignUp> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: AppStrings.alreadyHaveAccount,
+                          text: appLocal.alreadyHaveAccount,
                           style: theme.textTheme.titleSmall,
                         ),
                         WidgetSpan(
@@ -160,12 +171,20 @@ class _SignUpState extends State<SignUp> {
                               Navigator.pop(context);
                             },
                             child: Text(
-                              AppStrings.login,
-                              style: theme.textTheme.titleSmall?.copyWith(
-                                color: ColorPalette.primaryLightColor,
-                                decoration: TextDecoration.underline,
-                                decorationColor: ColorPalette.primaryLightColor,
-                              ),
+                              appLocal.login,
+                              style: isDark
+                                  ? theme.textTheme.titleMedium!.copyWith(
+                                      color: ColorPalette.primaryDarkColor,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor:
+                                          ColorPalette.primaryDarkColor,
+                                    )
+                                  : theme.textTheme.titleMedium?.copyWith(
+                                      color: ColorPalette.primaryLightColor,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor:
+                                          ColorPalette.primaryLightColor,
+                                    ),
                             ),
                           ),
                         ),
@@ -181,35 +200,72 @@ class _SignUpState extends State<SignUp> {
                           indent: 20,
                           endIndent: 20,
                           thickness: 1,
-                          color: ColorPalette.strokeLightColor,
+                          color: isDark
+                              ? ColorPalette.strokeDarkColor
+                              : ColorPalette.strokeLightColor,
                         ),
                       ),
-                      Text(AppStrings.or, style: theme.textTheme.titleMedium),
+                      Text(
+                        appLocal.or,
+                        style: isDark
+                            ? theme.textTheme.titleMedium!.copyWith(
+                                color: ColorPalette.primaryDarkColor,
+                              )
+                            : theme.textTheme.titleMedium,
+                      ),
                       Expanded(
                         child: Divider(
                           indent: 20,
                           endIndent: 20,
-                          color: ColorPalette.strokeLightColor,
+                          color: isDark
+                              ? ColorPalette.strokeDarkColor
+                              : ColorPalette.strokeLightColor,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(height: 20),
-                  ElevatedButtonWidget(
-                    onPressed: () {},
-                    backgroundColor: ColorPalette.primaryDarkTextColor,
-                    foregroundColor: ColorPalette.primaryLightColor,
-                    customChild: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      spacing: 10,
-                      children: [
-                        Assets.icons.googleIconLogoSvgrepoCom.svg(
-                          width: 24,
-                          height: 24,
+                  Consumer<AuthenticationProvider>(
+                    builder: (context,auth,_) {
+                      return ElevatedButtonWidget(
+                       onPressed: ()async {
+                                  await context.read<AuthenticationProvider>().signInWithGoogle();
+                                  if (auth.user != null) {
+                                  print(auth.user);
+                                  SnackBarServices.showSuccessMessage(
+                                  'you are now logged in',
+                                  );
+                                  Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  PagesRouteName.layout,
+                                  (route) => false,
+                                  arguments: auth.user,
+                                  );
+                                  }
+                                  },
+                        backgroundColor: isDark
+                            ? ColorPalette.backgroundDarkColor
+                            : ColorPalette.primaryDarkTextColor,
+                        foregroundColor: ColorPalette.primaryDarkColor,
+                        customChild: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 10,
+                          children: [
+                            Assets.icons.googleIconLogoSvgrepoCom.svg(
+                              width: 24,
+                              height: 24,
+                            ),
+                            Text(
+                              appLocal.signUpWithGoogle,
+                              style:TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            ),
+                          ],
                         ),
-                        Text(AppStrings.signUpWithGoogle),
-                      ],
-                    ),
+                      );
+                    }
                   ),
                 ],
               ),

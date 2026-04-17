@@ -43,6 +43,9 @@ class $AssetsIconsGen {
   SvgGenImage get clockLight =>
       const SvgGenImage('assets/icons/clock_light.svg');
 
+  /// File path: assets/icons/edit-2.svg
+  SvgGenImage get edit2 => const SvgGenImage('assets/icons/edit-2.svg');
+
   /// File path: assets/icons/edit.svg
   SvgGenImage get edit => const SvgGenImage('assets/icons/edit.svg');
 
@@ -59,6 +62,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/google.svg
   SvgGenImage get google => const SvgGenImage('assets/icons/google.svg');
 
+  /// File path: assets/icons/heart_dark.svg
+  SvgGenImage get heartDark => const SvgGenImage('assets/icons/heart_dark.svg');
+
   /// File path: assets/icons/heart_selected.svg
   SvgGenImage get heartSelected =>
       const SvgGenImage('assets/icons/heart_selected.svg');
@@ -66,6 +72,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/heart_un_selected.svg
   SvgGenImage get heartUnSelected =>
       const SvgGenImage('assets/icons/heart_un_selected.svg');
+
+  /// File path: assets/icons/home-dark.svg
+  SvgGenImage get homeDark => const SvgGenImage('assets/icons/home-dark.svg');
 
   /// File path: assets/icons/home_selected.svg
   SvgGenImage get homeSelected =>
@@ -77,6 +86,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/icons/lock.svg');
+
+  /// File path: assets/icons/logout.svg
+  SvgGenImage get logout => const SvgGenImage('assets/icons/logout.svg');
 
   /// File path: assets/icons/moon_dark.svg
   SvgGenImage get moonDark => const SvgGenImage('assets/icons/moon_dark.svg');
@@ -106,6 +118,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/icons/trash.svg');
 
+  /// File path: assets/icons/user_dark.svg
+  SvgGenImage get userDark => const SvgGenImage('assets/icons/user_dark.svg');
+
   /// File path: assets/icons/user_selected.svg
   SvgGenImage get userSelected =>
       const SvgGenImage('assets/icons/user_selected.svg');
@@ -127,16 +142,20 @@ class $AssetsIconsGen {
     calendarLight,
     clockDark,
     clockLight,
+    edit2,
     edit,
     eyeSlash,
     eye,
     googleIconLogoSvgrepoCom,
     google,
+    heartDark,
     heartSelected,
     heartUnSelected,
+    homeDark,
     homeSelected,
     homeUnSelected,
     lock,
+    logout,
     moonDark,
     moonLight,
     search,
@@ -146,6 +165,7 @@ class $AssetsIconsGen {
     sun,
     sunLight,
     trash,
+    userDark,
     userSelected,
     userUnSelceted,
     visibilityOff,
@@ -303,8 +323,12 @@ class $AssetsImagesGen {
 class Assets {
   const Assets._();
 
+  static const String aEnv = '.env';
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+
+  /// List of all assets
+  static List<String> get values => [aEnv];
 }
 
 class AssetGenImage {

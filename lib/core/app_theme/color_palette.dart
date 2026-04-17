@@ -5,6 +5,7 @@ abstract class ColorPalette {
   static const Color backgroundDarkColor = Color(0xFF000F30);
   static const Color primaryLightColor = Color(0xFF0E3A99);
   static const Color primaryDarkColor = Color(0xFF457AED);
+  static const Color primaryDarkTextFieldColor = Color(0xFF001440);
   static const Color strokeLightColor = Color(0xFFF0F0F0);
   static const Color strokeDarkColor = Color(0xFF002D8F);
   static const Color secondaryLightTextColor = Color(0xFF686868);
@@ -12,4 +13,5 @@ abstract class ColorPalette {
   static const Color secondaryDarkTextColor = Color(0xFFD6D6D6);
   static const Color primaryDarkTextColor = Color(0xFFFFFFFF);
   static const Color disabledColor = Color(0xFFB9B9B9);
+  static const Color switchColor = Color(0xFFE9EAEB);
 }

@@ -1,4 +1,5 @@
 import 'package:evently/core/constants/app_strings.dart';
+import 'package:evently/core/l10n/app_localizations.dart';
 import 'package:evently/core/widgets/text_form_field_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +48,8 @@ class _FavoriteViewState extends State<FavoriteView> {
   DateTime? selectedEventDate;
   @override
   Widget build(BuildContext context) {
+    var appLocal = AppLocalizations.of(context);
+
     return SafeArea(
       child: Column(
         spacing: 10,
@@ -59,7 +62,7 @@ class _FavoriteViewState extends State<FavoriteView> {
                 searchText = value;
                 search();
               },
-              hintText: AppStrings.searchForEvent,
+              hintText: appLocal!.searchForEvent,
               controller: _searchController,
               suffixIcon: Assets.icons.search.svg(width: 24, height: 24),
             ),

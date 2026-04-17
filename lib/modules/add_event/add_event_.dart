@@ -9,6 +9,9 @@ import 'package:evently/utils/firestore_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../../core/l10n/app_localizations.dart';
+import '../../core/providers/appProvider/app_provider.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/event_category_model.dart';
 import '../layout/home_view/widgets/TabBarItemWidget.dart';
@@ -24,39 +27,46 @@ class _AddEventState extends State<AddEvent> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  List<EventCategoryModel> categories = [
-    EventCategoryModel(
-      id: 'sport',
-      name: 'Sport',
-      lightImage: Assets.images.sportLight.path,
-      darkImage: Assets.images.sportDark.path,
-      icon: Assets.icons.sportLight,
-    ),
-    EventCategoryModel(
-      id: 'birthday',
-      name: 'Birthday',
-      lightImage: Assets.images.birthdayLight.path,
-      darkImage: Assets.images.birthdayDark.path,
-      icon: Assets.icons.birthdayCakeLight,
-    ),
-    EventCategoryModel(
-      id: 'book_club',
-      name: 'BookClub',
-      lightImage: Assets.images.bookclubLight.path,
-      darkImage: Assets.images.bookclubDark.path,
-      icon: Assets.icons.bookLight,
-    ),
-  ];
+
   int currentIndex = 0;
   DateTime? selectedEventDate;
   @override
   Widget build(BuildContext context) {
+
+
     final theme = Theme.of(context);
+    var appLocal = AppLocalizations.of(context);
+    final provider = Provider.of<AppProvider>(context);
+
+    List<EventCategoryModel> categories = [
+      EventCategoryModel(
+        id: 'sport',
+        name: appLocal!.sport,
+        lightImage: Assets.images.sportLight.path,
+        darkImage: Assets.images.sportDark.path,
+        icon: Assets.icons.sportLight,
+      ),
+      EventCategoryModel(
+        id: 'birthday',
+        name: appLocal.birthday,
+        lightImage: Assets.images.birthdayLight.path,
+        darkImage: Assets.images.birthdayDark.path,
+        icon: Assets.icons.birthdayCakeLight,
+      ),
+      EventCategoryModel(
+        id: 'book_club',
+        name: appLocal.bookClub,
+        lightImage: Assets.images.bookclubLight.path,
+        darkImage: Assets.images.bookclubDark.path,
+        icon: Assets.icons.bookLight,
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.addEvent),
+        title: Text(appLocal.addEvent),
         centerTitle: true,
         backgroundColor: Colors.transparent,
+        foregroundColor: provider.isDark?ColorPalette.primaryDarkTextColor:ColorPalette.primaryLightColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -69,9 +79,9 @@ class _AddEventState extends State<AddEvent> {
               decoration: BoxDecoration(
                 color: ColorPalette.primaryDarkTextColor,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: ColorPalette.strokeLightColor),
+                border: Border.all(color: provider.isDark?ColorPalette.strokeDarkColor:ColorPalette.strokeLightColor),
                 image: DecorationImage(
-                  image: AssetImage(categories[currentIndex].lightImage),
+                  image: provider.isDark? AssetImage(categories[currentIndex].darkImage):AssetImage(categories[currentIndex].lightImage),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -106,9 +116,9 @@ class _AddEventState extends State<AddEvent> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   spacing: 8,
                   children: [
-                    Text(AppStrings.title),
+                    Text(appLocal.title),
                     TextFormFieldWidget(
-                      hintText: AppStrings.eventTitle,
+                      hintText: appLocal.eventTitle,
                       controller: _titleController,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -117,9 +127,9 @@ class _AddEventState extends State<AddEvent> {
                         return null;
                       },
                     ),
-                    Text(AppStrings.description),
+                    Text(appLocal.description),
                     TextFormFieldWidget(
-                      hintText: AppStrings.eventDescription,
+                      hintText: appLocal.eventDescription,
                       controller: _descriptionController,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -133,10 +143,10 @@ class _AddEventState extends State<AddEvent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: [
-                        Assets.icons.calendarLight.svg(),
+                       provider.isDark?Assets.icons.calendarDark.svg(): Assets.icons.calendarLight.svg(),
                         Expanded(
                           child: Text(
-                            AppStrings.eventDate,
+                            appLocal.eventDate,
                             style: theme.textTheme.titleMedium,
                           ),
                         ),
@@ -149,9 +159,9 @@ class _AddEventState extends State<AddEvent> {
                                 ? DateFormat(
                                     'dd MMM yyyy',
                                   ).format(selectedEventDate!)
-                                : AppStrings.chooseDate,
+                                : appLocal.chooseDate,
                             style: theme.textTheme.titleSmall!.copyWith(
-                              color: ColorPalette.primaryLightColor,
+                              color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
                               decoration: TextDecoration.underline,
                               decorationColor: ColorPalette.primaryLightColor,
                             ),
@@ -163,17 +173,17 @@ class _AddEventState extends State<AddEvent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: [
-                        Assets.icons.clockLight.svg(),
+                        provider.isDark? Assets.icons.clockDark.svg():Assets.icons.clockLight.svg(),
                         Expanded(
                           child: Text(
-                            AppStrings.eventTime,
+                            appLocal.eventTime,
                             style: theme.textTheme.titleMedium,
                           ),
                         ),
                         Text(
-                          AppStrings.chooseTime,
+                          appLocal.chooseTime,
                           style: theme.textTheme.titleSmall!.copyWith(
-                            color: ColorPalette.primaryLightColor,
+                            color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
                             decoration: TextDecoration.underline,
                             decorationColor: ColorPalette.primaryLightColor,
                           ),
@@ -209,7 +219,7 @@ class _AddEventState extends State<AddEvent> {
                         }
                       },
                       customChild: Text(
-                        AppStrings.addEvent,
+                        appLocal.addEvent,
                         style: theme.textTheme.titleLarge!.copyWith(
                           color: ColorPalette.primaryDarkTextColor,
                         ),

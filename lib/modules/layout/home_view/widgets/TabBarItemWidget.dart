@@ -1,5 +1,5 @@
 import 'package:evently/models/event_category_model.dart';
-import 'package:evently/modules/appProvider/app_provider.dart';
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/app_theme/color_palette.dart';
@@ -21,7 +21,7 @@ class TabBarItemWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
-        color: provider.isDark()
+        color: provider.isDark
             ? isSelected
                   ? ColorPalette.primaryDarkColor
                   : ColorPalette.backgroundDarkColor
@@ -30,7 +30,7 @@ class TabBarItemWidget extends StatelessWidget {
             : ColorPalette.primaryDarkTextColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: provider.isDark()
+          color: provider.isDark
               ? ColorPalette.strokeDarkColor
               : ColorPalette.strokeLightColor,
         ),
@@ -42,7 +42,7 @@ class TabBarItemWidget extends StatelessWidget {
             width: 24,
             height: 24,
             colorFilter: ColorFilter.mode(
-              provider.isDark()
+              provider.isDark
                   ? isSelected
                         ? ColorPalette.primaryDarkTextColor
                         : ColorPalette.primaryDarkColor

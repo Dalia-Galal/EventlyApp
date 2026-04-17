@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -31,7 +32,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
+              'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
         throw UnsupportedError(
@@ -40,8 +41,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCMltFS_rqS7rNd3aEiFvRhWvvcocjOhKg',
+  static final FirebaseOptions web = FirebaseOptions(
+    apiKey: dotenv.env['WebKey']??'',
     appId: '1:32266065148:web:f8c5d94faef0d7397cf379',
     messagingSenderId: '32266065148',
     projectId: 'evently-events',
@@ -50,16 +51,16 @@ class DefaultFirebaseOptions {
     measurementId: 'G-M0K04G6NKN',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD44EGYPePrfQdOgQrwbRFfA9vbo18ikTU',
+  static final FirebaseOptions android = FirebaseOptions(
+    apiKey:dotenv.env ['AndroidKey']??'',
     appId: '1:32266065148:android:78a00bde847624977cf379',
     messagingSenderId: '32266065148',
     projectId: 'evently-events',
     storageBucket: 'evently-events.firebasestorage.app',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAm_0IZyZKkstN9YjbYdHDtM4gE8ytH3QI',
+  static final FirebaseOptions ios = FirebaseOptions(
+    apiKey:dotenv.env ['IOSKey']??"",
     appId: '1:32266065148:ios:95b52242f326677a7cf379',
     messagingSenderId: '32266065148',
     projectId: 'evently-events',
@@ -67,8 +68,8 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.evently',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAm_0IZyZKkstN9YjbYdHDtM4gE8ytH3QI',
+  static final FirebaseOptions macos = FirebaseOptions(
+    apiKey: dotenv.env['MacOSKey']??'',
     appId: '1:32266065148:ios:95b52242f326677a7cf379',
     messagingSenderId: '32266065148',
     projectId: 'evently-events',
@@ -76,8 +77,8 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.evently',
   );
 
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCMltFS_rqS7rNd3aEiFvRhWvvcocjOhKg',
+  static final FirebaseOptions windows = FirebaseOptions(
+    apiKey: dotenv.env['WindowsKey']??'',
     appId: '1:32266065148:web:8f0f4b44c71a5dbc7cf379',
     messagingSenderId: '32266065148',
     projectId: 'evently-events',

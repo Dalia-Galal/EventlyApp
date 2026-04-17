@@ -1,11 +1,14 @@
 import 'package:evently/core/app_theme/color_palette.dart';
 import 'package:evently/core/constants/app_strings.dart';
+import 'package:evently/core/l10n/app_localizations.dart';
 import 'package:evently/modules/layout/favorite_view/favorite_view.dart';
 import 'package:evently/modules/layout/home_view/home_view.dart';
 import 'package:evently/modules/layout/profile_view/profile_view.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../gen/assets.gen.dart';
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 
 class Layout extends StatefulWidget {
   const Layout({super.key});
@@ -20,7 +23,9 @@ class _LayoutState extends State<Layout> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    var appLocal = AppLocalizations.of(context);
+    final provider = Provider.of<AppProvider>(context);
+    bool isDark = provider.currentThemeMode == ThemeMode.dark;
     return Scaffold(
       body: _pages[currentItemIndex],
       bottomNavigationBar: ClipRRect(
@@ -37,19 +42,27 @@ class _LayoutState extends State<Layout> {
           },
           items: [
             BottomNavigationBarItem(
-              label: AppStrings.home,
-              icon: Assets.icons.homeUnSelected.svg(),
-              activeIcon: Assets.icons.homeSelected.svg(),
+              label: appLocal!.home,
+              icon: isDark
+                  ? Assets.icons.homeUnSelected.svg()
+                  : Assets.icons.homeUnSelected.svg(),
+              activeIcon: isDark
+                  ? Assets.icons.homeDark.svg()
+                  : Assets.icons.homeSelected.svg(),
             ),
             BottomNavigationBarItem(
-              label: AppStrings.favorite,
+              label: appLocal.favorite,
               icon: Assets.icons.heartUnSelected.svg(),
-              activeIcon: Assets.icons.heartSelected.svg(),
+              activeIcon: isDark
+                  ? Assets.icons.heartDark.svg()
+                  : Assets.icons.heartSelected.svg(),
             ),
             BottomNavigationBarItem(
-              label: AppStrings.profile,
+              label: appLocal.profile,
               icon: Assets.icons.userUnSelceted.svg(),
-              activeIcon: Assets.icons.userSelected.svg(),
+              activeIcon: isDark
+                  ? Assets.icons.userDark.svg()
+                  : Assets.icons.userSelected.svg(),
             ),
           ],
         ),

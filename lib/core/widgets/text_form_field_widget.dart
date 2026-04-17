@@ -1,4 +1,6 @@
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../gen/assets.gen.dart';
 import '../app_theme/color_palette.dart';
@@ -37,7 +39,8 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-
+    final provider = Provider.of<AppProvider>(context);
+    bool isDark = provider.currentThemeMode == ThemeMode.dark;
     return TextFormField(
       controller: widget.controller,
       validator: widget.validator,
@@ -45,13 +48,15 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       onChanged: (value) {
         widget.onChanged?.call(value);
       },
-
       // autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: widget.isPassword ? obscureText : false,
       cursorColor: ColorPalette.strokeLightColor,
 
       decoration: InputDecoration(
         hintText: widget.hintText,
+        hintStyle:
+           theme.textTheme.titleSmall,
+
         prefixIcon: (widget.prefixIcon != null)
             ? Padding(
                 padding: EdgeInsetsGeometry.all(10),
@@ -86,19 +91,19 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
               )
             : null,
         filled: true,
-        fillColor: Colors.white,
+        fillColor:  isDark?ColorPalette.primaryDarkTextFieldColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: ColorPalette.strokeLightColor),
+          borderSide: BorderSide(color:  isDark?ColorPalette.strokeDarkColor:ColorPalette.strokeLightColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: ColorPalette.strokeLightColor),
+          borderSide: BorderSide(color:  isDark?ColorPalette.strokeDarkColor:ColorPalette.strokeLightColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(
-            color: ColorPalette.strokeLightColor,
+            color: isDark?ColorPalette.strokeDarkColor:ColorPalette.strokeLightColor,
             width: 1,
           ),
         ),

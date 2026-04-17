@@ -1,8 +1,12 @@
+import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/app_theme/color_palette.dart';
 import '../../core/constants/app_strings.dart';
+import '../../core/l10n/app_localizations.dart';
+import '../../core/providers/appProvider/app_provider.dart';
 import '../../core/routes/pages_route_name.dart';
 import '../../core/widgets/elevated_button_widget.dart';
 import '../../core/widgets/text_form_field_widget.dart';
@@ -25,29 +29,6 @@ class _EditEventState extends State<EditEvent> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  List<EventCategoryModel> categories = [
-    EventCategoryModel(
-      id: 'sport',
-      name: 'Sport',
-      lightImage: Assets.images.sportLight.path,
-      darkImage: Assets.images.sportDark.path,
-      icon: Assets.icons.sportLight,
-    ),
-    EventCategoryModel(
-      id: 'birthday',
-      name: 'Birthday',
-      lightImage: Assets.images.birthdayLight.path,
-      darkImage: Assets.images.birthdayDark.path,
-      icon: Assets.icons.birthdayCakeLight,
-    ),
-    EventCategoryModel(
-      id: 'book_club',
-      name: 'BookClub',
-      lightImage: Assets.images.bookclubLight.path,
-      darkImage: Assets.images.bookclubDark.path,
-      icon: Assets.icons.bookLight,
-    ),
-  ];
   late EventDataModel eventData =
       ModalRoute.of(context)!.settings.arguments as EventDataModel;
   int currentIndex = 0;
@@ -55,12 +36,40 @@ class _EditEventState extends State<EditEvent> {
   DateTime? selectedEventDate;
   @override
   Widget build(BuildContext context) {
+
     final theme = Theme.of(context);
+    final provider = Provider.of<AppProvider>(context);
+    var appLocal = AppLocalizations.of(context);
+    List<EventCategoryModel> categories = [
+      EventCategoryModel(
+        id: 'sport',
+        name: appLocal!.sport,
+        lightImage: Assets.images.sportLight.path,
+        darkImage: Assets.images.sportDark.path,
+        icon: Assets.icons.sportLight,
+      ),
+      EventCategoryModel(
+        id: 'birthday',
+        name: appLocal.birthday,
+        lightImage: Assets.images.birthdayLight.path,
+        darkImage: Assets.images.birthdayDark.path,
+        icon: Assets.icons.birthdayCakeLight,
+      ),
+      EventCategoryModel(
+        id: 'book_club',
+        name: appLocal.bookClub,
+        lightImage: Assets.images.bookclubLight.path,
+        darkImage: Assets.images.bookclubDark.path,
+        icon: Assets.icons.bookLight,
+      ),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(AppStrings.editEvent),
+        title: Text(appLocal.editEvent),
         centerTitle: true,
+        foregroundColor: provider.isDark?ColorPalette.primaryDarkTextColor:ColorPalette.primaryLightColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -72,11 +81,11 @@ class _EditEventState extends State<EditEvent> {
               height: 190,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: ColorPalette.primaryDarkTextColor,
+                color: provider.isDark?ColorPalette.primaryDarkTextFieldColor:ColorPalette.primaryDarkTextColor,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: ColorPalette.strokeLightColor),
+                border: Border.all(color: provider.isDark?ColorPalette.strokeDarkColor:ColorPalette.strokeLightColor),
                 image: DecorationImage(
-                  image: AssetImage(categories[currentIndex].lightImage),
+                  image: provider.isDark?AssetImage(categories[currentIndex].darkImage):AssetImage(categories[currentIndex].lightImage),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -111,7 +120,7 @@ class _EditEventState extends State<EditEvent> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   spacing: 8,
                   children: [
-                    Text(AppStrings.title),
+                    Text(appLocal.title),
                     TextFormFieldWidget(
                       hintText: eventData.eventTitle,
                       controller: _titleController,
@@ -122,7 +131,7 @@ class _EditEventState extends State<EditEvent> {
                         return null;
                       },
                     ),
-                    Text(AppStrings.description),
+                    Text(appLocal.description),
                     TextFormFieldWidget(
                       hintText: eventData.eventDescription,
                       controller: _descriptionController,
@@ -138,10 +147,11 @@ class _EditEventState extends State<EditEvent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: [
+                       provider.isDark?Assets.icons.calendarDark.svg():
                         Assets.icons.calendarLight.svg(),
                         Expanded(
                           child: Text(
-                            AppStrings.eventDate,
+                            appLocal.eventDate,
                             style: theme.textTheme.titleMedium,
                           ),
                         ),
@@ -156,7 +166,7 @@ class _EditEventState extends State<EditEvent> {
                                   : selectedEventDate!,
                             ),
                             style: theme.textTheme.titleSmall!.copyWith(
-                              color: ColorPalette.primaryLightColor,
+                              color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
                               decoration: TextDecoration.underline,
                               decorationColor: ColorPalette.primaryLightColor,
                             ),
@@ -168,17 +178,17 @@ class _EditEventState extends State<EditEvent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: [
-                        Assets.icons.clockLight.svg(),
+                        provider.isDark?Assets.icons.clockDark.svg():Assets.icons.clockLight.svg(),
                         Expanded(
                           child: Text(
-                            AppStrings.eventTime,
+                            appLocal.eventTime,
                             style: theme.textTheme.titleMedium,
                           ),
                         ),
                         Text(
-                          AppStrings.chooseTime,
+                          appLocal.chooseTime,
                           style: theme.textTheme.titleSmall!.copyWith(
-                            color: ColorPalette.primaryLightColor,
+                            color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
                             decoration: TextDecoration.underline,
                             decorationColor: ColorPalette.primaryLightColor,
                           ),
@@ -186,43 +196,48 @@ class _EditEventState extends State<EditEvent> {
                       ],
                     ),
                     SizedBox(height: 24),
-                    ElevatedButtonWidget(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          if (selectedEventDate == null) {
-                            SnackBarServices.showSuccessMessage(
-                                'event did not edited',);
-                            return;
-                          }
-                          SnackBarServices.showSuccessMessage(
-                            'Event edited Successfully',
-                          );
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            PagesRouteName.layout,
-                            (route) => false,
-                          );
-                          EventDataModel data = EventDataModel(
-                            eventId: eventData.eventId,
-                            eventCategoryDarkImage:
-                                categories[currentIndex].darkImage,
-                            eventTitle: _titleController.text,
-                            eventDescription: _descriptionController.text,
-                            eventDate: selectedEventDate!,
-                            eventCategoryId: categories[currentIndex].id,
-                            eventCategoryLightImage:
-                                categories[currentIndex].lightImage,
-                          );
-                          FirestoreUtils.updateEvent(data);
-                        }
-                      },
+                    Consumer<AuthenticationProvider>(
+                      builder: (context,auth,_) {
+                        return ElevatedButtonWidget(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              if (selectedEventDate == null) {
+                                SnackBarServices.showSuccessMessage(
+                                    'event did not edited',);
+                                return;
+                              }
+                              SnackBarServices.showSuccessMessage(
+                                'Event edited Successfully',
+                              );
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                PagesRouteName.layout,
+                                (route) => false,
+                              );
+                              EventDataModel data = EventDataModel(
+                                eventId: eventData.eventId,
+                                eventCategoryDarkImage:
+                                    categories[currentIndex].darkImage,
+                                eventTitle: _titleController.text,
+                                eventDescription: _descriptionController.text,
+                                eventDate: selectedEventDate!,
+                                eventCategoryId: categories[currentIndex].id,
+                                eventCategoryLightImage:
+                                    categories[currentIndex].lightImage,
+                                  ownerId: auth.user!.userId,
+                              );
+                              FirestoreUtils.updateEvent(data);
+                            }
+                          },
 
-                      customChild: Text(
-                        AppStrings.updateEvent,
-                        style: theme.textTheme.titleLarge!.copyWith(
-                          color: ColorPalette.primaryDarkTextColor,
-                        ),
-                      ),
+                          customChild: Text(
+                            appLocal.updateEvent,
+                            style: theme.textTheme.titleLarge!.copyWith(
+                              color: ColorPalette.primaryDarkTextColor,
+                            ),
+                          ),
+                        );
+                      }
                     ),
                   ],
                 ),

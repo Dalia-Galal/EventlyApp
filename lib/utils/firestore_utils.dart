@@ -32,9 +32,9 @@ abstract class FirestoreUtils {
       isEqualTo: categoryId,
     );
     var data = await collectionRef.get();
-    data.docs.map((e) {
-      eventsData.add(e.data());
-    }).toList();
+    for (var doc in data.docs) {
+      eventsData.add(doc.data());
+    }
     return eventsData;
   }
 
@@ -94,5 +94,11 @@ abstract class FirestoreUtils {
   static Future<UserDataModel?> getUserFromFirestore(String userId) async {
     var doc = await getCollectionReferenceForUser().doc(userId).get();
     return doc.data();
+  }
+  static Future<void> resetPassword(String userEmail) async {
+
+    await FirebaseAuth.instance.sendPasswordResetEmail(
+      email: userEmail,
+    );
   }
 }
