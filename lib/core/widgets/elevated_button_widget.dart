@@ -10,6 +10,9 @@ class ElevatedButtonWidget extends StatelessWidget {
   final Color? foregroundColor;
   final Color? backgroundColor;
   final Widget? customChild;
+  final bool isOnboardingSetting;
+  final bool? isTheme;
+  final bool? isSelected;
   const ElevatedButtonWidget({
     super.key,
     this.buttonText,
@@ -17,6 +20,9 @@ class ElevatedButtonWidget extends StatelessWidget {
     this.foregroundColor,
     this.backgroundColor,
     this.customChild,
+    this.isOnboardingSetting = false,
+    this.isTheme = false,
+    this.isSelected = false,
   });
 
   @override
@@ -29,11 +35,22 @@ class ElevatedButtonWidget extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: isDark
             ? backgroundColor ?? ColorPalette.primaryDarkColor
+            : isSelected!
+            ? ColorPalette.primaryDarkTextColor
             : backgroundColor ?? ColorPalette.primaryLightColor,
         foregroundColor: isDark
-            ? foregroundColor ?? ColorPalette.primaryLightTextColor
+            ? foregroundColor ?? ColorPalette.primaryDarkColor
             : foregroundColor ?? ColorPalette.primaryDarkTextColor,
-        side: BorderSide(color: isDark?ColorPalette.strokeDarkColor:ColorPalette.strokeLightColor)
+        side: BorderSide(
+          color: isDark
+              ? ColorPalette.strokeDarkColor
+              : ColorPalette.strokeLightColor,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(
+            isOnboardingSetting ? 8 : 16,
+          ),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.only(top: 14.0, bottom: 14.0),
@@ -41,9 +58,19 @@ class ElevatedButtonWidget extends StatelessWidget {
             customChild ??
             Text(
               buttonText!,
-              style: theme.textTheme.titleLarge?.copyWith(
-                color: ColorPalette.primaryDarkTextColor,
-              ),
+              style: isOnboardingSetting
+                  ? theme.textTheme.titleLarge!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: isSelected! && !provider.isDark
+                          ? ColorPalette.primaryLightColor
+                          : isSelected! && !provider.isDark
+                          ? ColorPalette.primaryDarkTextColor
+                          : ColorPalette.secondaryDarkTextColor,
+                    )
+                  : theme.textTheme.titleLarge?.copyWith(
+                      color: ColorPalette.primaryDarkTextColor,
+                    ),
             ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:evently/modules/event_details/event_details.dart';
 import 'package:evently/modules/forget_password/forget_password.dart';
 import 'package:evently/modules/layout/layout.dart';
 import 'package:evently/modules/login/login_screen.dart';
+import 'package:evently/modules/onboarding/onboarding.dart';
 import 'package:evently/modules/sign_up/sign_up.dart';
 import 'package:evently/modules/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,9 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (context) =>EventDetails(), settings: settings,);
       case PagesRouteName.editEvent:
         return MaterialPageRoute(builder: (context) =>EditEvent(), settings: settings,);
+    case PagesRouteName.onboarding:
+    return MaterialPageRoute(builder: (context) => Onboarding());
+
       default:
         return MaterialPageRoute(builder: (context) => SplashScreen());
     }

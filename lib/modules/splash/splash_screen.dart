@@ -21,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(Duration(seconds: 3), () async {
       final auth = context.read<AuthenticationProvider>();
+      final settingProvider = context.read<AppProvider>();
       while (!auth.isInitialized) {
         await Future.delayed(Duration(milliseconds: 100));
       }
@@ -31,8 +32,10 @@ class _SplashScreenState extends State<SplashScreen> {
           PagesRouteName.layout,
           arguments: auth.user,
         );
-      } else {
+      } else if (settingProvider.hasSeenOnboarding) {
         Navigator.pushReplacementNamed(context, PagesRouteName.signIn);
+      } else {
+        Navigator.pushReplacementNamed(context, PagesRouteName.onboarding);
       }
     });
   }

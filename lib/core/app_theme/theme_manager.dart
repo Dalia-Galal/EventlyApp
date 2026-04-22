@@ -117,7 +117,7 @@ abstract class ThemeManager {
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorPalette.primaryDarkTextFieldColor,
         foregroundColor: ColorPalette.primaryLightColor,
-        side: BorderSide(color: ColorPalette.strokeDarkColor ),
+        side: BorderSide(color: ColorPalette.strokeDarkColor, ),
       ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(

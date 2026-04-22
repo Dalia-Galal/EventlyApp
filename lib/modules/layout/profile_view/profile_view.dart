@@ -18,7 +18,9 @@ class ProfileView extends StatelessWidget {
     var appLocal = AppLocalizations.of(context);
     final provider = Provider.of<AppProvider>(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,

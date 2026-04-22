@@ -21,6 +21,7 @@ class AppProvider extends ChangeNotifier {
     final isEnglish = _prefs.getBool('isEnglish')?? true;
     _currentThemeMode = isDark ? ThemeMode.dark : ThemeMode.light;
     _currentLanguage= isEnglish ?'en':'ar';
+    hasSeenOnboarding = _prefs.getBool('hasSeenOnboarding') ?? false;
     notifyListeners();
   }
 
@@ -42,4 +43,17 @@ class AppProvider extends ChangeNotifier {
   }
   bool  get isDark => _currentThemeMode == ThemeMode.dark;
   bool get isEnglish => _currentLanguage =='en';
+
+  bool hasSeenOnboarding = false;
+
+  Future<void> setOnboardingSeen() async {
+    hasSeenOnboarding = true;
+    await _prefs.setBool('hasSeenOnboarding', true);
+    notifyListeners();
+  }
+
+  Future<void> getOnboardingSeen() async {
+    hasSeenOnboarding = _prefs.getBool('hasSeenOnboarding') ?? false;
+    notifyListeners();
+  }
 }

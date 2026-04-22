@@ -7,4 +7,6 @@ abstract class PagesRouteName {
   static const addEvent='/add_event';
   static const eventDetails='/event_details';
   static const editEvent='/editEvent';
+  static const onboarding='/onBoarding';
+
 }
