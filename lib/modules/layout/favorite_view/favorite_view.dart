@@ -1,12 +1,9 @@
-import 'package:evently/core/constants/app_strings.dart';
 import 'package:evently/core/l10n/app_localizations.dart';
 import 'package:evently/core/widgets/text_form_field_widget.dart';
 import 'package:flutter/material.dart';
-
 import '../../../core/routes/pages_route_name.dart';
 import '../../../core/widgets/event_card_widget.dart';
 import '../../../gen/assets.gen.dart';
-import '../../../models/event_category_model.dart';
 import '../../../models/event_data_model.dart';
 import '../../../utils/firestore_utils.dart';
 
@@ -20,31 +17,7 @@ class FavoriteView extends StatefulWidget {
 class _FavoriteViewState extends State<FavoriteView> {
   final TextEditingController _searchController = TextEditingController();
   String searchText = '';
-  List<EventCategoryModel> categories = [
-    EventCategoryModel(
-      id: 'sport',
-      name: 'Sport',
-      lightImage: Assets.images.sportLight.path,
-      darkImage: Assets.images.sportDark.path,
-      icon: Assets.icons.sportLight,
-    ),
-    EventCategoryModel(
-      id: 'birthday',
-      name: 'Birthday',
-      lightImage: Assets.images.birthdayLight.path,
-      darkImage: Assets.images.birthdayDark.path,
-      icon: Assets.icons.birthdayCakeLight,
-    ),
-    EventCategoryModel(
-      id: 'book_club',
-      name: 'BookClub',
-      lightImage: Assets.images.bookclubLight.path,
-      darkImage: Assets.images.bookclubDark.path,
-      icon: Assets.icons.bookLight,
-    ),
-  ];
   List<EventDataModel> data = [];
-  int currentIndex = 0;
   DateTime? selectedEventDate;
   @override
   Widget build(BuildContext context) {

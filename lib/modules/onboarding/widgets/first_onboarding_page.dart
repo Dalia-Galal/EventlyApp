@@ -1,13 +1,4 @@
-import 'package:evently/core/app_theme/color_palette.dart';
-import 'package:evently/core/l10n/app_localizations.dart';
-import 'package:evently/core/providers/appProvider/app_provider.dart';
-import 'package:evently/gen/assets.gen.dart';
-import 'package:evently/models/onboarding_data_model.dart';
-import 'package:evently/modules/onboarding/widgets/settings_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../core/widgets/elevated_button_widget.dart';
 
 // class FirstOnboardingPage extends StatelessWidget {
 //   final OnboardingDataModel onboardingDataModel;

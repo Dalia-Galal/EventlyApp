@@ -1,19 +1,16 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:evently/core/app_theme/theme_manager.dart';
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:evently/core/routes/app_router.dart';
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/firebase_options.dart';
-import 'package:evently/core/providers/appProvider/app_provider.dart';
-import 'package:evently/modules/layout/home_view/home_view.dart';
-import 'package:evently/modules/login/login_screen.dart';
 import 'package:evently/services/easy_loading.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/l10n/app_localizations.dart';

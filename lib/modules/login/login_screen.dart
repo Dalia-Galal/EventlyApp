@@ -1,17 +1,12 @@
 import 'package:evently/core/app_theme/color_palette.dart';
-import 'package:evently/core/constants/app_strings.dart';
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
 import 'package:evently/core/widgets/text_form_field_widget.dart';
-import 'package:evently/models/event_data_model.dart';
-import 'package:evently/models/user_data_model.dart';
-import 'package:evently/core/providers/appProvider/app_provider.dart';
-import 'package:evently/utils/firebase_authentication_utils.dart';
-import 'package:evently/utils/firestore_utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../core/l10n/app_localizations.dart';
 import '../../gen/assets.gen.dart';
 import '../../services/snack_bar_services.dart';
@@ -128,6 +123,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 20),
                   Consumer<AuthenticationProvider>(
                     builder: (context,auth,_) {
+                      if (auth.errorMessage != null) {
+                        SnackBarServices.showErrorMessage(auth.errorMessage!);
+                      }
                       return ElevatedButtonWidget(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
@@ -136,17 +134,21 @@ class _LoginScreenState extends State<LoginScreen> {
                               _passwordController.text,
                             );
                             if (auth.user != null) {
-                              print(auth.user);
                               SnackBarServices.showSuccessMessage(
                                 'you are now logged in',
                               );
-                              Navigator.pushNamedAndRemoveUntil(
+                              if(context.mounted) {
+                                Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 PagesRouteName.layout,
                                 (route) => false,
                                 arguments: auth.user,
                               );
+                              }
                             }
+                            // else{
+                            //   SnackBarServices.showErrorMessage('login failed');
+                            // }
                           }
                         },
                         buttonText: appLocal.login,
@@ -231,16 +233,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: ()async {
                         await context.read<AuthenticationProvider>().signInWithGoogle();
                         if (auth.user != null) {
-                          print(auth.user);
                           SnackBarServices.showSuccessMessage(
                             'you are now logged in',
                           );
-                          Navigator.pushNamedAndRemoveUntil(
+                          if(context.mounted) {
+                            Navigator.pushNamedAndRemoveUntil(
                             context,
                             PagesRouteName.layout,
                                 (route) => false,
                             arguments: auth.user,
                           );
+                          }
                         }
                         },
                         backgroundColor: isDark

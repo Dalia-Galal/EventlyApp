@@ -1,6 +1,5 @@
-import 'package:evently/core/app_theme/color_palette.dart';
-import 'package:evently/core/constants/app_strings.dart';
 import 'package:evently/core/l10n/app_localizations.dart';
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/modules/layout/favorite_view/favorite_view.dart';
 import 'package:evently/modules/layout/home_view/home_view.dart';
 import 'package:evently/modules/layout/profile_view/profile_view.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../gen/assets.gen.dart';
-import 'package:evently/core/providers/appProvider/app_provider.dart';
 
 class Layout extends StatefulWidget {
   const Layout({super.key});
@@ -22,7 +20,6 @@ class _LayoutState extends State<Layout> {
   final List<Widget> _pages = [HomeView(), FavoriteView(), ProfileView()];
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     var appLocal = AppLocalizations.of(context);
     final provider = Provider.of<AppProvider>(context);
     bool isDark = provider.currentThemeMode == ThemeMode.dark;

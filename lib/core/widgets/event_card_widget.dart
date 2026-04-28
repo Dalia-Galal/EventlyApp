@@ -1,16 +1,15 @@
 import 'package:evently/core/app_theme/color_palette.dart';
-import 'package:evently/core/constants/app_strings.dart';
-import 'package:evently/models/event_data_model.dart';
 import 'package:evently/core/providers/appProvider/app_provider.dart';
+import 'package:evently/models/event_data_model.dart';
+import 'package:evently/services/snack_bar_services.dart';
 import 'package:evently/utils/firestore_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../gen/assets.gen.dart';
 
-class EventCardWidget extends StatelessWidget {
+class EventCardWidget extends StatefulWidget {
   final EventDataModel dataModel;
   final Function onTap;
   const EventCardWidget({
@@ -20,13 +19,17 @@ class EventCardWidget extends StatelessWidget {
   });
 
   @override
+  State<EventCardWidget> createState() => _EventCardWidgetState();
+}
+
+class _EventCardWidgetState extends State<EventCardWidget> {
+  @override
   Widget build(BuildContext context) {
     final provider = Provider.of<AppProvider>(context);
     var theme = Theme.of(context);
-    final bool isFavorite = false;
     return GestureDetector(
       onTap: () {
-        onTap.call();
+        widget.onTap.call();
       },
       child: Container(
         width: double.infinity,
@@ -36,8 +39,8 @@ class EventCardWidget extends StatelessWidget {
           image: DecorationImage(
             image: AssetImage(
               provider.isDark
-                  ? dataModel.eventCategoryDarkImage
-                  : dataModel.eventCategoryLightImage,
+                  ? widget.dataModel.eventCategoryDarkImage
+                  : widget.dataModel.eventCategoryLightImage,
             ),
             fit: BoxFit.cover,
           ),
@@ -67,7 +70,7 @@ class EventCardWidget extends StatelessWidget {
                     : ColorPalette.backgroundLightColor,
               ),
               child: Text(
-                DateFormat('dd MMM').format(dataModel.eventDate),
+                DateFormat('dd MMM').format(widget.dataModel.eventDate),
                 style: theme.textTheme.titleMedium!.copyWith(
                   color: provider.isDark
                       ? ColorPalette.primaryDarkColor
@@ -91,14 +94,24 @@ class EventCardWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Expanded(child: Text(dataModel.eventDescription)),
+                  Expanded(child: Text(widget.dataModel.eventDescription)),
 
                   GestureDetector(
-                    onTap: () {
-                      dataModel.isFavorite = !dataModel.isFavorite;
-                      FirestoreUtils.updateEvent(dataModel);
+                    onTap: () async {
+                      setState(() {
+                        widget.dataModel.isFavorite =
+                        !widget.dataModel.isFavorite;
+                      });
+                      try {
+                        await FirestoreUtils.updateEvent(widget.dataModel);
+
+                      } catch (e) {  setState(() {
+                        widget.dataModel.isFavorite =
+                        !widget.dataModel.isFavorite;
+                      });
+                      SnackBarServices.showErrorMessage('Failed to update, please try again');}
                     },
-                    child: (dataModel.isFavorite)
+                    child: (widget.dataModel.isFavorite)
                         ? Assets.icons.heartSelected.svg(
                             colorFilter: ColorFilter.mode(
                               provider.isDark

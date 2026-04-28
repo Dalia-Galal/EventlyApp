@@ -1,9 +1,8 @@
 import 'package:evently/core/app_theme/color_palette.dart';
-import 'package:evently/core/constants/app_strings.dart';
 import 'package:evently/core/l10n/app_localizations.dart';
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
-import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -90,7 +89,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       await context.read<AuthenticationProvider>().resetPassword(
                       _emailController.text.trim()
                     ); }
-                    Navigator.pop(context);
+                   if (context.mounted) {
+                     Navigator.pop(context);
+                   }
                   },
                   buttonText: appLocal.resetPassword,
                 ),

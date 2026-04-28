@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:evently/core/app_theme/color_palette.dart';
 import 'package:flutter/material.dart';
 
 class SnackBarServices {
@@ -12,7 +11,7 @@ class SnackBarServices {
 
       toastBuilder: (void Function() cancelFunction) {
         return Material(
-          color: ColorPalette.backgroundLightColor,
+          color: Colors.transparent,
           child: Container(
             margin: EdgeInsets.all(12),
             padding: EdgeInsets.all(12),
@@ -23,12 +22,16 @@ class SnackBarServices {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
-             // crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //mainAxisSize: MainAxisSize.min,
               children: [
-                Text(message,textAlign: TextAlign.start,),
-                IconButton(onPressed: () {}, icon: Icon(Icons.clear,size: 24,),padding: EdgeInsets.symmetric(horizontal:10 ),),
+                Expanded(child: Text(message, textAlign: TextAlign.start)),
+                IconButton(
+                  onPressed: () { cancelFunction.call();},
+                  icon: Icon(Icons.clear, size: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                ),
               ],
             ),
           ),
@@ -36,16 +39,17 @@ class SnackBarServices {
       },
     );
   }
+
   static void showWarningMessage(
-      String message, {
-        bool isLoginWarning = false,
-      }) {
+    String message, {
+    bool isLoginWarning = false,
+  }) {
     BotToast.showCustomNotification(
       duration: Duration(seconds: 10),
 
       toastBuilder: (void Function() cancelFunction) {
         return Material(
-          color: ColorPalette.backgroundLightColor,
+          color: Colors.transparent,
           child: Container(
             margin: EdgeInsets.all(12),
             padding: EdgeInsets.all(12),
@@ -56,12 +60,16 @@ class SnackBarServices {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
+             crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //mainAxisSize: MainAxisSize.min,
               children: [
-                Text(message,textAlign: TextAlign.start,),
-                IconButton(onPressed: () {}, icon: Icon(Icons.clear,size: 24,),padding: EdgeInsets.symmetric(horizontal:10 ),),
+                Expanded(child: Text(message, textAlign: TextAlign.start)),
+                IconButton(
+                  onPressed: () { cancelFunction.call();},
+                  icon: Icon(Icons.clear, size: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                ),
               ],
             ),
           ),
@@ -69,16 +77,15 @@ class SnackBarServices {
       },
     );
   }
-  static void showErrorMessage(
-      String message, {
-        bool isLoginWarning = false,
-      }) {
+
+  static void showErrorMessage(String message, {
+    bool isLoginWarning = false}) {
     BotToast.showCustomNotification(
       duration: Duration(seconds: 10),
 
       toastBuilder: (void Function() cancelFunction) {
         return Material(
-          color: ColorPalette.backgroundLightColor,
+          color: Colors.transparent,
           child: Container(
             margin: EdgeInsets.all(12),
             padding: EdgeInsets.all(12),
@@ -89,12 +96,16 @@ class SnackBarServices {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //mainAxisSize: MainAxisSize.min,
               children: [
-                Text(message,textAlign: TextAlign.start,),
-                IconButton(onPressed: () {}, icon: Icon(Icons.clear,size: 24,),padding: EdgeInsets.symmetric(horizontal:10 ),),
+                Expanded(child: Text(message, textAlign: TextAlign.start)),
+                IconButton(
+                  onPressed: () { cancelFunction.call();},
+                  icon: Icon(Icons.clear, size: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                ),
               ],
             ),
           ),

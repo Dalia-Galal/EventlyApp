@@ -3,8 +3,8 @@ import 'package:evently/utils/firestore_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
 import '../../core/app_theme/color_palette.dart';
-import '../../core/constants/app_strings.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/providers/appProvider/app_provider.dart';
 import '../../gen/assets.gen.dart';
@@ -129,7 +129,7 @@ class EventDetails extends StatelessWidget {
                           style: theme.textTheme.titleMedium,
                         ),
                         Text(
-                          '12.12pm',
+                         eventData.eventTime?? '12.12pm',
                           style: theme.textTheme.titleMedium!.copyWith(
                             color: ColorPalette.disabledColor,
                           ),

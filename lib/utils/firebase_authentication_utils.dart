@@ -2,7 +2,6 @@ import 'package:evently/models/user_data_model.dart';
 import 'package:evently/services/snack_bar_services.dart';
 import 'package:evently/utils/firestore_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthenticationUtils {
   static Future<UserDataModel?> createUserWithEmailAndPassword(
@@ -40,47 +39,14 @@ class FirebaseAuthenticationUtils {
   static Future<UserDataModel?> signInWithEmailAndPassword(
     String emailAddress,
     String password,
-  ) async {
-    try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailAddress,
-        password: password,
-      );
-      UserDataModel? user = await FirestoreUtils.getUserFromFirestore(
-        credential.user!.uid,
-      );
-      print('User Name${user?.userName}');
+  ) async { final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+    email: emailAddress,
+    password: password,
+  );
+  UserDataModel? user = await FirestoreUtils.getUserFromFirestore(
+      credential.user!.uid,
+  );
       return user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-credential') {
-        SnackBarServices.showErrorMessage('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        SnackBarServices.showErrorMessage(
-          'Wrong password provided for that user.',
-        );
-      }
-      return Future.value(null);
-    }
-  }
 
-  static final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
-  // static Future<UserCredential?> signInWithGoogle() async {
-  //   try
-  //   {
-  //     await GoogleSignIn.instance.initialize(
-  //       serverClientId:
-  //           '32266065148-g782cq6vlh4csgcgrhlfhjchjjtu4ql4.apps.googleusercontent.com',
-  //     );
-  //     final GoogleSignInAccount result = await _googleSignIn.authenticate();
-  //
-  //     final googleAuth = result.authentication;
-  //
-  //     final credential = GoogleAuthProvider.credential(
-  //       idToken: googleAuth.idToken,
-  //     );
-  //     return await FirebaseAuth.instance.signInWithCredential(credential);
-  //   }catch(e){
-  //     return null;
-  //   }
-  // }
+  }
 }

@@ -1,9 +1,9 @@
-import 'package:evently/models/event_category_model.dart';
 import 'package:evently/core/providers/appProvider/app_provider.dart';
+import 'package:evently/models/event_category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../core/app_theme/color_palette.dart';
-import '../../../../gen/assets.gen.dart';
 
 class TabBarItemWidget extends StatelessWidget {
   final EventCategoryModel eventCategoryModel;

@@ -1,5 +1,4 @@
 import 'package:evently/core/app_theme/color_palette.dart';
-import 'package:evently/core/constants/app_strings.dart';
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
 import 'package:evently/core/widgets/text_form_field_widget.dart';
@@ -10,11 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
 import '../../core/l10n/app_localizations.dart';
 import '../../core/providers/appProvider/app_provider.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/event_category_model.dart';
-import '../layout/home_view/widgets/TabBarItemWidget.dart';
+import '../layout/home_view/widgets/tab_bar_item_widget.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({super.key});
@@ -30,43 +30,25 @@ class _AddEventState extends State<AddEvent> {
 
   int currentIndex = 0;
   DateTime? selectedEventDate;
+  TimeOfDay? timeOfDay;
   @override
   Widget build(BuildContext context) {
-
-
     final theme = Theme.of(context);
     var appLocal = AppLocalizations.of(context);
     final provider = Provider.of<AppProvider>(context);
 
-    List<EventCategoryModel> categories = [
-      EventCategoryModel(
-        id: 'sport',
-        name: appLocal!.sport,
-        lightImage: Assets.images.sportLight.path,
-        darkImage: Assets.images.sportDark.path,
-        icon: Assets.icons.sportLight,
-      ),
-      EventCategoryModel(
-        id: 'birthday',
-        name: appLocal.birthday,
-        lightImage: Assets.images.birthdayLight.path,
-        darkImage: Assets.images.birthdayDark.path,
-        icon: Assets.icons.birthdayCakeLight,
-      ),
-      EventCategoryModel(
-        id: 'book_club',
-        name: appLocal.bookClub,
-        lightImage: Assets.images.bookclubLight.path,
-        darkImage: Assets.images.bookclubDark.path,
-        icon: Assets.icons.bookLight,
-      ),
-    ];
+    List<EventCategoryModel> categories = EventCategoryModel.getCategories(
+      appLocal!,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(appLocal.addEvent),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        foregroundColor: provider.isDark?ColorPalette.primaryDarkTextColor:ColorPalette.primaryLightColor,
+        foregroundColor: provider.isDark
+            ? ColorPalette.primaryDarkTextColor
+            : ColorPalette.primaryLightColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -79,9 +61,15 @@ class _AddEventState extends State<AddEvent> {
               decoration: BoxDecoration(
                 color: ColorPalette.primaryDarkTextColor,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: provider.isDark?ColorPalette.strokeDarkColor:ColorPalette.strokeLightColor),
+                border: Border.all(
+                  color: provider.isDark
+                      ? ColorPalette.strokeDarkColor
+                      : ColorPalette.strokeLightColor,
+                ),
                 image: DecorationImage(
-                  image: provider.isDark? AssetImage(categories[currentIndex].darkImage):AssetImage(categories[currentIndex].lightImage),
+                  image: provider.isDark
+                      ? AssetImage(categories[currentIndex].darkImage)
+                      : AssetImage(categories[currentIndex].lightImage),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -143,7 +131,9 @@ class _AddEventState extends State<AddEvent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: [
-                       provider.isDark?Assets.icons.calendarDark.svg(): Assets.icons.calendarLight.svg(),
+                        provider.isDark
+                            ? Assets.icons.calendarDark.svg()
+                            : Assets.icons.calendarLight.svg(),
                         Expanded(
                           child: Text(
                             appLocal.eventDate,
@@ -161,7 +151,9 @@ class _AddEventState extends State<AddEvent> {
                                   ).format(selectedEventDate!)
                                 : appLocal.chooseDate,
                             style: theme.textTheme.titleSmall!.copyWith(
-                              color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
+                              color: provider.isDark
+                                  ? ColorPalette.primaryDarkColor
+                                  : ColorPalette.primaryLightColor,
                               decoration: TextDecoration.underline,
                               decorationColor: ColorPalette.primaryLightColor,
                             ),
@@ -169,55 +161,82 @@ class _AddEventState extends State<AddEvent> {
                         ),
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 8,
-                      children: [
-                        provider.isDark? Assets.icons.clockDark.svg():Assets.icons.clockLight.svg(),
-                        Expanded(
-                          child: Text(
-                            appLocal.eventTime,
-                            style: theme.textTheme.titleMedium,
+                    GestureDetector(
+                      onTap: getSelectedTime,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 8,
+                        children: [
+                          provider.isDark
+                              ? Assets.icons.clockDark.svg()
+                              : Assets.icons.clockLight.svg(),
+                          Expanded(
+                            child: Text(
+                              appLocal.eventTime,
+                              style: theme.textTheme.titleMedium,
+                            ),
                           ),
-                        ),
-                        Text(
-                          appLocal.chooseTime,
-                          style: theme.textTheme.titleSmall!.copyWith(
-                            color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
-                            decoration: TextDecoration.underline,
-                            decorationColor: ColorPalette.primaryLightColor,
+                          Text(
+                            (timeOfDay != null)
+                                ? timeOfDay!.format(context)
+                                : appLocal.chooseTime,
+                            style: theme.textTheme.titleSmall!.copyWith(
+                              color: provider.isDark
+                                  ? ColorPalette.primaryDarkColor
+                                  : ColorPalette.primaryLightColor,
+                              decoration: TextDecoration.underline,
+                              decorationColor: ColorPalette.primaryLightColor,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(height: 24),
                     ElevatedButtonWidget(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          if (selectedEventDate == null) {
-                            return;
-                          }
-                          SnackBarServices.showSuccessMessage('Event added');
-                          Navigator.pop(context, PagesRouteName.layout);
-                          EventDataModel data = EventDataModel(
-                            eventCategoryDarkImage:
-                                categories[currentIndex].darkImage,
-                            eventTitle: _titleController.text,
-                            eventDescription: _descriptionController.text,
-                            eventDate: selectedEventDate!,
-                            eventCategoryId: categories[currentIndex].id,
-                            eventCategoryLightImage:
-                                categories[currentIndex].lightImage,
-                          );
-                          EasyLoading.show();
-                          Future.delayed(Duration(seconds:0),(){
-                          FirestoreUtils.addEvent(data).then((value) {
-                          EasyLoading.dismiss();
-                          });
-                          });
+                      onPressed: () async {
+                        if (!_formKey.currentState!.validate()) return;
 
+                        if (selectedEventDate == null) {
+                          SnackBarServices.showErrorMessage(
+                            'Date not selected',
+                          );
+                          return;
+                        }
+                        if (timeOfDay == null) {
+                          SnackBarServices.showErrorMessage(
+                            'Time not selected',
+                          );
+                          return;
+                        }
+                        final EventDataModel data = EventDataModel(
+                          eventCategoryDarkImage:
+                              categories[currentIndex].darkImage,
+                          eventTitle: _titleController.text,
+                          eventDescription: _descriptionController.text,
+                          eventDate: selectedEventDate!,
+                          eventTime: timeOfDay!.format(context),
+                          eventCategoryId: categories[currentIndex].id,
+                          eventCategoryLightImage:
+                              categories[currentIndex].lightImage,
+                        );
+                        EasyLoading.show();
+                        try {
+                          await FirestoreUtils.addEvent(data);
+                          EasyLoading.dismiss();
+                          SnackBarServices.showSuccessMessage(
+                            'event added successfully',
+                          );
+                          if (context.mounted) {
+                            Navigator.pop(context, PagesRouteName.layout);
+                          }
+                        } catch (e) {
+                          EasyLoading.dismiss();
+                          return SnackBarServices.showErrorMessage(
+                            e.toString(),
+                          );
                         }
                       },
+
                       customChild: Text(
                         appLocal.addEvent,
                         style: theme.textTheme.titleLarge!.copyWith(
@@ -243,6 +262,17 @@ class _AddEventState extends State<AddEvent> {
     );
     setState(() {
       selectedEventDate = showCurrentDate;
+    });
+  }
+
+  void getSelectedTime() async {
+    var showCurrentTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    setState(() {
+      timeOfDay = showCurrentTime;
     });
   }
 }

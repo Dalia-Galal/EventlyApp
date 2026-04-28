@@ -25,44 +25,29 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<void> _init() async {
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
-      print('=== authStateChanges fired ===');
-      print('=== firebaseUser: $firebaseUser ===');
+      debugPrint('=== authStateChanges fired ===');
+      debugPrint('=== firebaseUser: $firebaseUser ===');
       if (firebaseUser == null) {
         _user = null;
         _isInitialized = true;
         notifyListeners();
       } else {
         if (_user == null) {
-          print('=== fetching user from Firestore: ${firebaseUser.uid} ===');
+          debugPrint(
+            '=== fetching user from Firestore: ${firebaseUser.uid} ===',
+          );
           _user = await FirestoreUtils.getUserFromFirestore(firebaseUser.uid);
         }
       }
       _isInitialized = true;
       notifyListeners();
     });
-    // final currentUser = FirebaseAuth.instance.currentUser;
-    // if (currentUser != null) {
-    //   _user = await FirestoreUtils.getUserFromFirestore(currentUser.uid);
-    //   _isInitialized = true;
-    //   notifyListeners();
-    // }
-    // FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
-    //   if (firebaseUser == null) {
-    //     _isInitialized = true;
-    //     _user = null;
-    //   } else {
-    //     _user ??= await FirestoreUtils.getUserFromFirestore(firebaseUser.uid);
-    //     _isInitialized = true;
-    //   }
-    //
-    //   notifyListeners();
-    // });
   }
 
   Future<void> _initializeGoogleSignIn() async {
     if (!_googleSignInInitialized) {
       await GoogleSignIn.instance.initialize(
-        serverClientId:dotenv.env['ServerClientId']
+        serverClientId: dotenv.env['ServerClientId'],
       );
       _googleSignInInitialized = true;
     }
@@ -95,8 +80,25 @@ class AuthenticationProvider extends ChangeNotifier {
         email,
         password,
       );
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'invalid-credential':
+          _errorMessage = 'Wrong email or password.';
+        case 'user-not-found':
+          _errorMessage = 'No account found with this email.';
+        case 'wrong-password':
+          _errorMessage = 'Incorrect password, please try again.';
+        case 'user-disabled':
+          _errorMessage = 'This account has been disabled.';
+        case 'too-many-requests':
+          _errorMessage = 'Too many attempts, please try again later.';
+        case 'network-request-failed':
+          _errorMessage = 'No internet connection.';
+        default:
+          _errorMessage = 'Something went wrong, please try again.';}
     } catch (e) {
       _errorMessage = e.toString();
+      notifyListeners();
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -129,7 +131,7 @@ class AuthenticationProvider extends ChangeNotifier {
           userName: userCredential.user!.displayName ?? '',
           userEmail: userCredential.user!.email ?? '',
         );
-        print("Firebase user: ${userCredential.user}");
+        debugPrint("Firebase user: ${userCredential.user}");
         await FirestoreUtils.addUser(newUser);
         _user = newUser;
       } else {

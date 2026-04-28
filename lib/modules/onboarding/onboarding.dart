@@ -6,7 +6,6 @@ import 'package:evently/core/widgets/elevated_button_widget.dart';
 import 'package:evently/gen/assets.gen.dart';
 import 'package:evently/models/onboarding_data_model.dart';
 import 'package:evently/modules/onboarding/widgets/custom_onboarding_page_widget.dart';
-import 'package:evently/modules/onboarding/widgets/indicator_widget.dart';
 import 'package:evently/modules/onboarding/widgets/settings_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +33,6 @@ class _OnboardingState extends State<Onboarding> {
     final appLocal = AppLocalizations.of(context)!;
     final provider = Provider.of<AppProvider>(context);
     final onboardingList = _buildOnboardingList(appLocal);
-    ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

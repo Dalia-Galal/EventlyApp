@@ -1,7 +1,6 @@
 import 'package:evently/core/l10n/app_localizations.dart';
-import 'package:evently/core/providers/auth_provider/auth_provider.dart';
-import 'package:evently/models/user_data_model.dart';
 import 'package:evently/core/providers/appProvider/app_provider.dart';
+import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:evently/services/snack_bar_services.dart';
 import 'package:evently/utils/firebase_authentication_utils.dart';
 import 'package:flutter/material.dart';
@@ -143,14 +142,16 @@ class _SignUpState extends State<SignUp> {
                               SnackBarServices.showSuccessMessage(
                                 'Account created',
                               );
-                              Navigator.pushNamedAndRemoveUntil(
+                              if(context.mounted) {
+                                Navigator.pushNamedAndRemoveUntil(
                                 context,
                                 PagesRouteName.layout,
                                 (route) => false,
                                 arguments: auth.user,
                               );
+                              }
                             }
-                          } else {}
+                          }
                         },
                         buttonText: appLocal.signUP,
                       );
@@ -231,16 +232,17 @@ class _SignUpState extends State<SignUp> {
                        onPressed: ()async {
                                   await context.read<AuthenticationProvider>().signInWithGoogle();
                                   if (auth.user != null) {
-                                  print(auth.user);
                                   SnackBarServices.showSuccessMessage(
                                   'you are now logged in',
                                   );
-                                  Navigator.pushNamedAndRemoveUntil(
+                                  if(context.mounted) {
+                                    Navigator.pushNamedAndRemoveUntil(
                                   context,
                                   PagesRouteName.layout,
                                   (route) => false,
                                   arguments: auth.user,
                                   );
+                                  }
                                   }
                                   },
                         backgroundColor: isDark

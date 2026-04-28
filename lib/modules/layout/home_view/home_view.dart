@@ -1,17 +1,15 @@
 import 'package:evently/core/l10n/app_localizations.dart';
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:evently/core/routes/pages_route_name.dart';
 import 'package:evently/core/widgets/event_card_widget.dart';
 import 'package:evently/models/event_data_model.dart';
-import 'package:evently/models/user_data_model.dart';
-import 'package:evently/core/providers/appProvider/app_provider.dart';
-import 'package:evently/modules/layout/home_view/widgets/TabBarItemWidget.dart';
+import 'package:evently/modules/layout/home_view/widgets/tab_bar_item_widget.dart';
 import 'package:evently/utils/firestore_utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../core/app_theme/color_palette.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../models/event_category_model.dart';
 
@@ -33,29 +31,8 @@ class _HomeViewState extends State<HomeView> {
     var theme = Theme.of(context);
     var appLocal = AppLocalizations.of(context);
 
-    List<EventCategoryModel> categories = [
-      EventCategoryModel(
-        id: 'sport',
-        name: appLocal!.sport,
-        lightImage: Assets.images.sportLight.path,
-        darkImage: Assets.images.sportDark.path,
-        icon: Assets.icons.sportLight,
-      ),
-      EventCategoryModel(
-        id: 'birthday',
-        name: appLocal.birthday,
-        lightImage: Assets.images.birthdayLight.path,
-        darkImage: Assets.images.birthdayDark.path,
-        icon: Assets.icons.birthdayCakeLight,
-      ),
-      EventCategoryModel(
-        id: 'book_club',
-        name: appLocal.bookClub,
-        lightImage: Assets.images.bookclubLight.path,
-        darkImage: Assets.images.bookclubDark.path,
-        icon: Assets.icons.bookLight,
-      ),
-    ];
+    List<EventCategoryModel> categories =EventCategoryModel.getCategories(appLocal!);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

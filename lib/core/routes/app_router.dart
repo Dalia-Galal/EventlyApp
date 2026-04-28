@@ -1,5 +1,5 @@
 import 'package:evently/core/routes/pages_route_name.dart';
-import 'package:evently/modules/add_event/add_event_.dart';
+import 'package:evently/modules/add_event/add_event.dart';
 import 'package:evently/modules/edit_event/edit_event.dart';
 import 'package:evently/modules/event_details/event_details.dart';
 import 'package:evently/modules/forget_password/forget_password.dart';

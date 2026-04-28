@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/app_theme/color_palette.dart';
-import '../../core/constants/app_strings.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/providers/appProvider/app_provider.dart';
 import '../../core/routes/pages_route_name.dart';
@@ -15,7 +14,7 @@ import '../../models/event_category_model.dart';
 import '../../models/event_data_model.dart';
 import '../../services/snack_bar_services.dart';
 import '../../utils/firestore_utils.dart';
-import '../layout/home_view/widgets/TabBarItemWidget.dart';
+import '../layout/home_view/widgets/tab_bar_item_widget.dart';
 
 class EditEvent extends StatefulWidget {
   const EditEvent({super.key});
@@ -34,35 +33,14 @@ class _EditEventState extends State<EditEvent> {
   int currentIndex = 0;
 
   DateTime? selectedEventDate;
+  TimeOfDay? timeOfDay;
   @override
   Widget build(BuildContext context) {
 
     final theme = Theme.of(context);
     final provider = Provider.of<AppProvider>(context);
     var appLocal = AppLocalizations.of(context);
-    List<EventCategoryModel> categories = [
-      EventCategoryModel(
-        id: 'sport',
-        name: appLocal!.sport,
-        lightImage: Assets.images.sportLight.path,
-        darkImage: Assets.images.sportDark.path,
-        icon: Assets.icons.sportLight,
-      ),
-      EventCategoryModel(
-        id: 'birthday',
-        name: appLocal.birthday,
-        lightImage: Assets.images.birthdayLight.path,
-        darkImage: Assets.images.birthdayDark.path,
-        icon: Assets.icons.birthdayCakeLight,
-      ),
-      EventCategoryModel(
-        id: 'book_club',
-        name: appLocal.bookClub,
-        lightImage: Assets.images.bookclubLight.path,
-        darkImage: Assets.images.bookclubDark.path,
-        icon: Assets.icons.bookLight,
-      ),
-    ];
+     List<EventCategoryModel> categories =EventCategoryModel.getCategories(appLocal!);
 
     return Scaffold(
       appBar: AppBar(
@@ -185,12 +163,15 @@ class _EditEventState extends State<EditEvent> {
                             style: theme.textTheme.titleMedium,
                           ),
                         ),
-                        Text(
-                          appLocal.chooseTime,
-                          style: theme.textTheme.titleSmall!.copyWith(
-                            color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
-                            decoration: TextDecoration.underline,
-                            decorationColor: ColorPalette.primaryLightColor,
+                        InkWell(
+                          onTap: getSelectedTime,
+                          child: Text(
+                           ( timeOfDay!= null)?timeOfDay!.format(context):(eventData.eventTime!=null)?eventData.eventTime!:appLocal.chooseTime,
+                            style: theme.textTheme.titleSmall!.copyWith(
+                              color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
+                              decoration: TextDecoration.underline,
+                              decorationColor: ColorPalette.primaryLightColor,
+                            ),
                           ),
                         ),
                       ],
@@ -202,7 +183,7 @@ class _EditEventState extends State<EditEvent> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               if (selectedEventDate == null) {
-                                SnackBarServices.showSuccessMessage(
+                                SnackBarServices.showErrorMessage(
                                     'event did not edited',);
                                 return;
                               }
@@ -221,6 +202,7 @@ class _EditEventState extends State<EditEvent> {
                                 eventTitle: _titleController.text,
                                 eventDescription: _descriptionController.text,
                                 eventDate: selectedEventDate!,
+                                eventTime: eventData.eventTime,
                                 eventCategoryId: categories[currentIndex].id,
                                 eventCategoryLightImage:
                                     categories[currentIndex].lightImage,
@@ -257,6 +239,16 @@ class _EditEventState extends State<EditEvent> {
     );
     setState(() {
       selectedEventDate = showCurrentDate;
+    });
+  }
+  void getSelectedTime() async {
+    var showCurrentTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    setState(() {
+      timeOfDay = showCurrentTime;
     });
   }
 }

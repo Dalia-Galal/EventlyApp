@@ -1,12 +1,10 @@
+import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/core/providers/auth_provider/auth_provider.dart';
-import 'package:evently/core/routes/app_router.dart';
 import 'package:evently/core/routes/pages_route_name.dart';
-import 'package:evently/modules/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../gen/assets.gen.dart';
-import 'package:evently/core/providers/appProvider/app_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,9 +17,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    final auth = context.read<AuthenticationProvider>();
+    final settingProvider = context.read<AppProvider>();
     Future.delayed(Duration(seconds: 3), () async {
-      final auth = context.read<AuthenticationProvider>();
-      final settingProvider = context.read<AppProvider>();
+
       while (!auth.isInitialized) {
         await Future.delayed(Duration(milliseconds: 100));
       }

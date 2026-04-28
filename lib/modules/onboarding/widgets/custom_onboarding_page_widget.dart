@@ -1,9 +1,6 @@
-import 'package:evently/core/l10n/app_localizations.dart';
 import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
-import 'package:evently/gen/assets.gen.dart';
 import 'package:evently/models/onboarding_data_model.dart';
-import 'package:evently/modules/onboarding/widgets/settings_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +25,6 @@ class CustomOnboardingPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appLocal = AppLocalizations.of(context);
     ThemeData theme = Theme.of(context);
     final provider = Provider.of<AppProvider>(context);
     return Padding(

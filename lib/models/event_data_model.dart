@@ -4,6 +4,7 @@ class EventDataModel {
   String eventTitle;
   String eventDescription;
   DateTime eventDate;
+  String? eventTime;
   String eventCategoryId;
   String eventCategoryLightImage;
   String eventCategoryDarkImage;
@@ -15,6 +16,7 @@ class EventDataModel {
     required this.eventTitle,
     required this.eventDescription,
     required this.eventDate,
+    this.eventTime,
     required this.eventCategoryId,
     required this.eventCategoryLightImage,
     required this.eventCategoryDarkImage,
@@ -28,6 +30,7 @@ class EventDataModel {
       eventTitle: json['eventTitle'],
       eventDescription: json['eventDescription'],
       eventDate: DateTime.fromMillisecondsSinceEpoch(json['eventDate']),
+      eventTime: json['eventTime'],
       eventCategoryId: json['eventCategoryId'],
       eventCategoryLightImage: json['eventCategoryLightImage'],
       eventCategoryDarkImage: json['eventCategoryDarkImage'],
@@ -42,6 +45,7 @@ class EventDataModel {
       'eventTitle': eventTitle,
       'eventDescription': eventDescription,
       'eventDate': eventDate.millisecondsSinceEpoch,
+      'eventTime':eventTime,
       'eventCategoryId': eventCategoryId,
       'eventCategoryLightImage': eventCategoryLightImage,
       'eventCategoryDarkImage': eventCategoryDarkImage,

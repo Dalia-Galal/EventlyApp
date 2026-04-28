@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently/models/event_data_model.dart';
 import 'package:evently/models/user_data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 abstract class FirestoreUtils {
   static CollectionReference<EventDataModel> getCollectionReference() {
@@ -20,7 +19,7 @@ abstract class FirestoreUtils {
     var documentRef = collectionRef.doc();
     data.ownerId = FirebaseAuth.instance.currentUser!.uid;
     data.eventId = documentRef.id;
-    documentRef.set(data);
+    await documentRef.set(data);
   }
 
   static Future<List<EventDataModel>> getDataFromFirestore(
