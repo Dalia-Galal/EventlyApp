@@ -3,6 +3,7 @@ import 'package:evently/core/l10n/app_localizations.dart';
 import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:evently/core/widgets/elevated_button_widget.dart';
+import 'package:evently/services/snack_bar_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   void dispose() {
     _emailController.dispose();
-    super.dispose();}
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -83,15 +86,22 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   },
                 ),
                 ElevatedButtonWidget(
-                  onPressed: () async{
-                    if(_formKey.currentState!.validate()){
-
-                      await context.read<AuthenticationProvider>().resetPassword(
-                      _emailController.text.trim()
-                    ); }
-                   if (context.mounted) {
-                     Navigator.pop(context);
-                   }
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      try {
+                        await context
+                            .read<AuthenticationProvider>()
+                            .resetPassword(_emailController.text.trim());
+                        if (context.mounted) {
+                          SnackBarServices.showSuccessMessage(
+                            'If this email is registered,\n you will receive a reset link shortly.',
+                          );
+                          Navigator.pop(context);
+                        }
+                      } catch (e) {
+                        SnackBarServices.showErrorMessage(e.toString());
+                      }
+                    }
                   },
                   buttonText: appLocal.resetPassword,
                 ),

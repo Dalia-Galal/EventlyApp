@@ -24,9 +24,7 @@ class _SignUpState extends State<SignUp> {
 
   final TextEditingController _emailController = TextEditingController();
 
-  final TextEditingController _passwordController = TextEditingController(
-    // text: '1257Gy#02',
-  );
+  final TextEditingController _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -48,7 +46,9 @@ class _SignUpState extends State<SignUp> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Image.asset(
-                   isDark?Assets.images.eventelyDark.path: Assets.images.eventelyLight.path,
+                    isDark
+                        ? Assets.images.eventelyDark.path
+                        : Assets.images.eventelyLight.path,
                     width: 142,
                     height: 27,
                   ),
@@ -128,34 +128,33 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(height: 20),
                   SizedBox(height: 20),
                   Consumer<AuthenticationProvider>(
-                    builder: (context,auth,_) {
+                    builder: (context, auth, _) {
                       return ElevatedButtonWidget(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-
-                                await FirebaseAuthenticationUtils.createUserWithEmailAndPassword(
-                                  _nameController.text,
-                                  _emailController.text,
-                                  _passwordController.text,
-                                );
+                            await FirebaseAuthenticationUtils.createUserWithEmailAndPassword(
+                              _nameController.text,
+                              _emailController.text,
+                              _passwordController.text,
+                            );
                             if (auth.user != null) {
                               SnackBarServices.showSuccessMessage(
                                 'Account created',
                               );
-                              if(context.mounted) {
+                              if (context.mounted) {
                                 Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                PagesRouteName.layout,
-                                (route) => false,
-                                arguments: auth.user,
-                              );
+                                  context,
+                                  PagesRouteName.layout,
+                                  (route) => false,
+                                  arguments: auth.user,
+                                );
                               }
                             }
                           }
                         },
                         buttonText: appLocal.signUP,
                       );
-                    }
+                    },
                   ),
                   SizedBox(height: 20),
                   RichText(
@@ -227,24 +226,26 @@ class _SignUpState extends State<SignUp> {
                   ),
                   SizedBox(height: 20),
                   Consumer<AuthenticationProvider>(
-                    builder: (context,auth,_) {
+                    builder: (context, auth, _) {
                       return ElevatedButtonWidget(
-                       onPressed: ()async {
-                                  await context.read<AuthenticationProvider>().signInWithGoogle();
-                                  if (auth.user != null) {
-                                  SnackBarServices.showSuccessMessage(
-                                  'you are now logged in',
-                                  );
-                                  if(context.mounted) {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  PagesRouteName.layout,
-                                  (route) => false,
-                                  arguments: auth.user,
-                                  );
-                                  }
-                                  }
-                                  },
+                        onPressed: () async {
+                          await context
+                              .read<AuthenticationProvider>()
+                              .signInWithGoogle();
+                          if (auth.user != null) {
+                            SnackBarServices.showSuccessMessage(
+                              'you are now logged in',
+                            );
+                            if (context.mounted) {
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                PagesRouteName.layout,
+                                (route) => false,
+                                arguments: auth.user,
+                              );
+                            }
+                          }
+                        },
                         backgroundColor: isDark
                             ? ColorPalette.backgroundDarkColor
                             : ColorPalette.primaryDarkTextColor,
@@ -259,15 +260,15 @@ class _SignUpState extends State<SignUp> {
                             ),
                             Text(
                               appLocal.signUpWithGoogle,
-                              style:TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),
                       );
-                    }
+                    },
                   ),
                 ],
               ),

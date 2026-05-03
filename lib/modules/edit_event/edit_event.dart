@@ -1,5 +1,6 @@
 import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -36,18 +37,21 @@ class _EditEventState extends State<EditEvent> {
   TimeOfDay? timeOfDay;
   @override
   Widget build(BuildContext context) {
-
     final theme = Theme.of(context);
     final provider = Provider.of<AppProvider>(context);
     var appLocal = AppLocalizations.of(context);
-     List<EventCategoryModel> categories =EventCategoryModel.getCategories(appLocal!);
+    List<EventCategoryModel> categories = EventCategoryModel.getCategories(
+      appLocal!,
+    );
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(appLocal.editEvent),
         centerTitle: true,
-        foregroundColor: provider.isDark?ColorPalette.primaryDarkTextColor:ColorPalette.primaryLightColor,
+        foregroundColor: provider.isDark
+            ? ColorPalette.primaryDarkTextColor
+            : ColorPalette.primaryLightColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -59,11 +63,19 @@ class _EditEventState extends State<EditEvent> {
               height: 190,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: provider.isDark?ColorPalette.primaryDarkTextFieldColor:ColorPalette.primaryDarkTextColor,
+                color: provider.isDark
+                    ? ColorPalette.primaryDarkTextFieldColor
+                    : ColorPalette.primaryDarkTextColor,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: provider.isDark?ColorPalette.strokeDarkColor:ColorPalette.strokeLightColor),
+                border: Border.all(
+                  color: provider.isDark
+                      ? ColorPalette.strokeDarkColor
+                      : ColorPalette.strokeLightColor,
+                ),
                 image: DecorationImage(
-                  image: provider.isDark?AssetImage(categories[currentIndex].darkImage):AssetImage(categories[currentIndex].lightImage),
+                  image: provider.isDark
+                      ? AssetImage(categories[currentIndex].darkImage)
+                      : AssetImage(categories[currentIndex].lightImage),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -125,8 +137,9 @@ class _EditEventState extends State<EditEvent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: [
-                       provider.isDark?Assets.icons.calendarDark.svg():
-                        Assets.icons.calendarLight.svg(),
+                        provider.isDark
+                            ? Assets.icons.calendarDark.svg()
+                            : Assets.icons.calendarLight.svg(),
                         Expanded(
                           child: Text(
                             appLocal.eventDate,
@@ -144,7 +157,9 @@ class _EditEventState extends State<EditEvent> {
                                   : selectedEventDate!,
                             ),
                             style: theme.textTheme.titleSmall!.copyWith(
-                              color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
+                              color: provider.isDark
+                                  ? ColorPalette.primaryDarkColor
+                                  : ColorPalette.primaryLightColor,
                               decoration: TextDecoration.underline,
                               decorationColor: ColorPalette.primaryLightColor,
                             ),
@@ -156,7 +171,9 @@ class _EditEventState extends State<EditEvent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: [
-                        provider.isDark?Assets.icons.clockDark.svg():Assets.icons.clockLight.svg(),
+                        provider.isDark
+                            ? Assets.icons.clockDark.svg()
+                            : Assets.icons.clockLight.svg(),
                         Expanded(
                           child: Text(
                             appLocal.eventTime,
@@ -166,9 +183,15 @@ class _EditEventState extends State<EditEvent> {
                         InkWell(
                           onTap: getSelectedTime,
                           child: Text(
-                           ( timeOfDay!= null)?timeOfDay!.format(context):(eventData.eventTime!=null)?eventData.eventTime!:appLocal.chooseTime,
+                            (timeOfDay != null)
+                                ? timeOfDay!.format(context)
+                                : (eventData.eventTime != null)
+                                ? eventData.eventTime!
+                                : appLocal.chooseTime,
                             style: theme.textTheme.titleSmall!.copyWith(
-                              color: provider.isDark?ColorPalette.primaryDarkColor:ColorPalette.primaryLightColor,
+                              color: provider.isDark
+                                  ? ColorPalette.primaryDarkColor
+                                  : ColorPalette.primaryLightColor,
                               decoration: TextDecoration.underline,
                               decorationColor: ColorPalette.primaryLightColor,
                             ),
@@ -178,37 +201,53 @@ class _EditEventState extends State<EditEvent> {
                     ),
                     SizedBox(height: 24),
                     Consumer<AuthenticationProvider>(
-                      builder: (context,auth,_) {
+                      builder: (context, auth, _) {
                         return ElevatedButtonWidget(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              if (selectedEventDate == null) {
-                                SnackBarServices.showErrorMessage(
-                                    'event did not edited',);
-                                return;
-                              }
+                          onPressed: () async {
+                            if (!_formKey.currentState!.validate()) {
+                              return;
+                            }
+                            if (selectedEventDate == null) {
+                              SnackBarServices.showErrorMessage(
+                                'Please select a date',
+                              );
+                              return;
+                            }
+
+                            EventDataModel data = EventDataModel(
+                              eventId: eventData.eventId,
+                              eventCategoryDarkImage:
+                                  categories[currentIndex].darkImage,
+                              eventTitle: _titleController.text,
+                              eventDescription: _descriptionController.text,
+                              eventDate: selectedEventDate!,
+                              eventTime: timeOfDay != null
+                                  ? timeOfDay!.format(context)
+                                  : eventData.eventTime,
+                              eventCategoryId: categories[currentIndex].id,
+                              eventCategoryLightImage:
+                                  categories[currentIndex].lightImage,
+                              ownerId: auth.user!.userId,
+                            );
+
+                            EasyLoading.show();
+                            try {
+                              await FirestoreUtils.updateEvent(data);
+                              EasyLoading.dismiss();
                               SnackBarServices.showSuccessMessage(
                                 'Event edited Successfully',
                               );
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                PagesRouteName.layout,
-                                (route) => false,
-                              );
-                              EventDataModel data = EventDataModel(
-                                eventId: eventData.eventId,
-                                eventCategoryDarkImage:
-                                    categories[currentIndex].darkImage,
-                                eventTitle: _titleController.text,
-                                eventDescription: _descriptionController.text,
-                                eventDate: selectedEventDate!,
-                                eventTime: eventData.eventTime,
-                                eventCategoryId: categories[currentIndex].id,
-                                eventCategoryLightImage:
-                                    categories[currentIndex].lightImage,
-                                  ownerId: auth.user!.userId,
-                              );
-                              FirestoreUtils.updateEvent(data);
+
+                              if (context.mounted) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  PagesRouteName.layout,
+                                  (route) => false,
+                                );
+                              }
+                            } catch (e) {
+                              EasyLoading.dismiss();
+                              SnackBarServices.showErrorMessage(e.toString());
                             }
                           },
 
@@ -219,7 +258,7 @@ class _EditEventState extends State<EditEvent> {
                             ),
                           ),
                         );
-                      }
+                      },
                     ),
                   ],
                 ),
@@ -241,6 +280,7 @@ class _EditEventState extends State<EditEvent> {
       selectedEventDate = showCurrentDate;
     });
   }
+
   void getSelectedTime() async {
     var showCurrentTime = await showTimePicker(
       context: context,

@@ -94,10 +94,5 @@ abstract class FirestoreUtils {
     var doc = await getCollectionReferenceForUser().doc(userId).get();
     return doc.data();
   }
-  static Future<void> resetPassword(String userEmail) async {
 
-    await FirebaseAuth.instance.sendPasswordResetEmail(
-      email: userEmail,
-    );
-  }
 }

@@ -63,7 +63,21 @@ class AuthenticationProvider extends ChangeNotifier {
         email,
         password,
       );
-    } catch (e) {
+    }
+    on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'weak-password':
+          _errorMessage = 'Password must be at least 6 characters.';
+        case 'email-already-in-use':
+          _errorMessage = 'An account already exists with this email.';
+        case 'invalid-email':
+          _errorMessage = 'Please enter a valid email address.';
+        case 'network-request-failed':
+          _errorMessage = 'No internet connection.';
+        default:
+          _errorMessage = 'Something went wrong, please try again.';
+      }
+    }catch (e) {
       _errorMessage = e.toString();
     } finally {
       _isLoading = false;

@@ -1,7 +1,7 @@
 
 
 class UserDataModel {
-  static String collectionName = 'Users';
+  static const String  collectionName = 'Users';
   String? userId;
   String userName;
   String userEmail;

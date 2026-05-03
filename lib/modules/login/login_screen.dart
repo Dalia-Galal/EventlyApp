@@ -21,12 +21,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _emailController = TextEditingController(
-    text: 'dollagalal@gmail.com',
-  );
-  final TextEditingController _passwordController = TextEditingController(
-    text: '432257_Lm@',
-  );
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 20),
                   Consumer<AuthenticationProvider>(
-                    builder: (context,auth,_) {
+                    builder: (context, auth, _) {
                       if (auth.errorMessage != null) {
                         SnackBarServices.showErrorMessage(auth.errorMessage!);
                       }
@@ -137,23 +133,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               SnackBarServices.showSuccessMessage(
                                 'you are now logged in',
                               );
-                              if(context.mounted) {
+                              if (context.mounted) {
                                 Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                PagesRouteName.layout,
-                                (route) => false,
-                                arguments: auth.user,
-                              );
+                                  context,
+                                  PagesRouteName.layout,
+                                  (route) => false,
+                                  arguments: auth.user,
+                                );
                               }
                             }
-                            // else{
-                            //   SnackBarServices.showErrorMessage('login failed');
-                            // }
                           }
                         },
                         buttonText: appLocal.login,
                       );
-                    }
+                    },
                   ),
                   SizedBox(height: 20),
                   RichText(
@@ -162,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         TextSpan(
                           text: appLocal.doNotYouHaveAccount,
-                          style: theme.textTheme.titleSmall
+                          style: theme.textTheme.titleSmall,
                         ),
                         WidgetSpan(
                           child: InkWell(
@@ -228,23 +221,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 20),
                   Consumer<AuthenticationProvider>(
-                    builder: (context,auth,_) {
+                    builder: (context, auth, _) {
                       return ElevatedButtonWidget(
-                        onPressed: ()async {
-                        await context.read<AuthenticationProvider>().signInWithGoogle();
-                        if (auth.user != null) {
-                          SnackBarServices.showSuccessMessage(
-                            'you are now logged in',
-                          );
-                          if(context.mounted) {
-                            Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            PagesRouteName.layout,
+                        onPressed: () async {
+                          await context
+                              .read<AuthenticationProvider>()
+                              .signInWithGoogle();
+                          if (auth.user != null) {
+                            SnackBarServices.showSuccessMessage(
+                              'you are now logged in',
+                            );
+                            if (context.mounted) {
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                PagesRouteName.layout,
                                 (route) => false,
-                            arguments: auth.user,
-                          );
+                                arguments: auth.user,
+                              );
+                            }
                           }
-                        }
                         },
                         backgroundColor: isDark
                             ? ColorPalette.primaryDarkTextFieldColor
@@ -270,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                       );
-                    }
+                    },
                   ),
                 ],
               ),
