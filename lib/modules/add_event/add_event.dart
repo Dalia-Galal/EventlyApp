@@ -31,6 +31,14 @@ class _AddEventState extends State<AddEvent> {
   int currentIndex = 0;
   DateTime? selectedEventDate;
   TimeOfDay? timeOfDay;
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

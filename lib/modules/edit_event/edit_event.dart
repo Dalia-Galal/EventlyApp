@@ -28,15 +28,33 @@ class _EditEventState extends State<EditEvent> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-
-  late EventDataModel eventData =
-      ModalRoute.of(context)!.settings.arguments as EventDataModel;
+  late EventDataModel eventData;
+  bool _initialized = false;
   int currentIndex = 0;
 
   DateTime? selectedEventDate;
   TimeOfDay? timeOfDay;
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      eventData = ModalRoute.of(context)!.settings.arguments as EventDataModel;
+      _titleController.text = eventData.eventTitle;
+      _descriptionController.text = eventData.eventDescription;
+      selectedEventDate = eventData.eventDate;
+      _initialized = true;
+    }
+  }
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     final theme = Theme.of(context);
     final provider = Provider.of<AppProvider>(context);
     var appLocal = AppLocalizations.of(context);
@@ -207,12 +225,6 @@ class _EditEventState extends State<EditEvent> {
                             if (!_formKey.currentState!.validate()) {
                               return;
                             }
-                            if (selectedEventDate == null) {
-                              SnackBarServices.showErrorMessage(
-                                'Please select a date',
-                              );
-                              return;
-                            }
 
                             EventDataModel data = EventDataModel(
                               eventId: eventData.eventId,
@@ -220,7 +232,8 @@ class _EditEventState extends State<EditEvent> {
                                   categories[currentIndex].darkImage,
                               eventTitle: _titleController.text,
                               eventDescription: _descriptionController.text,
-                              eventDate: selectedEventDate!,
+                              eventDate:
+                                  selectedEventDate ?? eventData.eventDate,
                               eventTime: timeOfDay != null
                                   ? timeOfDay!.format(context)
                                   : eventData.eventTime,

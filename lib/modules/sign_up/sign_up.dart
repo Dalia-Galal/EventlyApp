@@ -29,6 +29,14 @@ class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     var appLocal = AppLocalizations.of(context);
@@ -132,7 +140,7 @@ class _SignUpState extends State<SignUp> {
                       return ElevatedButtonWidget(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            await FirebaseAuthenticationUtils.createUserWithEmailAndPassword(
+                            await auth.signUp(
                               _nameController.text,
                               _emailController.text,
                               _passwordController.text,

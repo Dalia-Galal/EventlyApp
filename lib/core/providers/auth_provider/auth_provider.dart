@@ -63,8 +63,7 @@ class AuthenticationProvider extends ChangeNotifier {
         email,
         password,
       );
-    }
-    on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'weak-password':
           _errorMessage = 'Password must be at least 6 characters.';
@@ -77,7 +76,7 @@ class AuthenticationProvider extends ChangeNotifier {
         default:
           _errorMessage = 'Something went wrong, please try again.';
       }
-    }catch (e) {
+    } catch (e) {
       _errorMessage = e.toString();
     } finally {
       _isLoading = false;
@@ -88,7 +87,7 @@ class AuthenticationProvider extends ChangeNotifier {
   Future<void> signIn(String email, String password) async {
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       _user = await FirebaseAuthenticationUtils.signInWithEmailAndPassword(
         email,
@@ -109,7 +108,8 @@ class AuthenticationProvider extends ChangeNotifier {
         case 'network-request-failed':
           _errorMessage = 'No internet connection.';
         default:
-          _errorMessage = 'Something went wrong, please try again.';}
+          _errorMessage = 'Something went wrong, please try again.';
+      }
     } catch (e) {
       _errorMessage = e.toString();
       notifyListeners();

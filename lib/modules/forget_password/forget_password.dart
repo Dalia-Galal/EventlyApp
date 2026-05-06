@@ -87,20 +87,19 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 ),
                 ElevatedButtonWidget(
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      try {
-                        await context
-                            .read<AuthenticationProvider>()
-                            .resetPassword(_emailController.text.trim());
-                        if (context.mounted) {
-                          SnackBarServices.showSuccessMessage(
-                            'If this email is registered,\n you will receive a reset link shortly.',
-                          );
-                          Navigator.pop(context);
-                        }
-                      } catch (e) {
-                        SnackBarServices.showErrorMessage(e.toString());
-                      }
+                    if (!_formKey.currentState!.validate()) return;
+
+                    final auth = context.read<AuthenticationProvider>();
+                    await auth.resetPassword(_emailController.text.trim());
+                    if (auth.errorMessage != null) {
+                      SnackBarServices.showErrorMessage(auth.errorMessage!);
+                      return;
+                    }
+                    if (context.mounted) {
+                      SnackBarServices.showSuccessMessage(
+                        'If this email is registered,\n you will receive a reset link shortly.',
+                      );
+                      Navigator.pop(context);
                     }
                   },
                   buttonText: appLocal.resetPassword,
