@@ -2,7 +2,6 @@ import 'package:evently/core/l10n/app_localizations.dart';
 import 'package:evently/core/providers/appProvider/app_provider.dart';
 import 'package:evently/core/providers/auth_provider/auth_provider.dart';
 import 'package:evently/services/snack_bar_services.dart';
-import 'package:evently/utils/firebase_authentication_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

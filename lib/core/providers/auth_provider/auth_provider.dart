@@ -112,7 +112,6 @@ class AuthenticationProvider extends ChangeNotifier {
       }
     } catch (e) {
       _errorMessage = e.toString();
-      notifyListeners();
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -178,6 +177,8 @@ class AuthenticationProvider extends ChangeNotifier {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: userEmail);
     } on FirebaseAuthException catch (e) {
       _errorMessage = e.message;
+    } catch (e) {
+      _errorMessage = e.toString();
     } finally {
       _isLoading = false;
       notifyListeners();
