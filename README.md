@@ -76,7 +76,7 @@ Firestore uses `withConverter<T>` for full type safety at the database layer.
 
 | Edit Event                                                            | Event Details                                                         | Profile Dark Mode                                                             |
 |-----------------------------------------------------------------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| <img src="assets/images/screenshots/edit_event.png width="200"/> | <img src="assets/images/screenshots/event_details.png" width="200"/> | <img src="assets/images/screenshots/profile_dark_mode.png" width="200"/> |
+| <img src="assets/images/screenshots/edit_event.png" width="200"/> | <img src="assets/images/screenshots/event_details.png" width="200"/> | <img src="assets/images/screenshots/profile_dark_mode.png" width="200"/> |
 
 | Login Screen English                                                       | Register Screen Arabic                                                        | 
 |----------------------------------------------------------------------------|-------------------------------------------------------------------------------|
