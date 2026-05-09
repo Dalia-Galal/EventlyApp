@@ -45,6 +45,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       controller: widget.controller,
       validator: widget.validator,
       // onFieldSubmitted: widget.onFieldSubmitted,
+
       onChanged: (value) {
         widget.onChanged?.call(value);
       },
@@ -118,6 +119,9 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       ),
       style: theme.textTheme.titleSmall,
       maxLines: widget.isPassword ? 1 : widget.maxLines,
+      onTapOutside:(event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      } ,
     );
   }
 }
